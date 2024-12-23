@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -12,6 +13,10 @@ class LoginController extends Controller
     public function index()
     {
         if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            return redirect("/");
         }
         return view('login');
     }
@@ -29,7 +34,33 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->btnLogin) {
+            $queryResult = json_decode(DB::table('users')->where('email', '=', $request->email)->get(), true);
+            if (count($queryResult) > 0) {
+                $user = array();
+                foreach ($queryResult as $q) {
+                    if (password_verify($request->password, $q['password'])) {
+                        $user = $q;
+                        break;
+                    }
+                }
+                if (count($user) > 0) {
+                    if ($user['userType'] == "user" && $user['status'] == "active") {
+                        session()->put("successLogin", true);
+                        session()->put("users", $user);
+                        return redirect("/user_home");
+                    } else {
+                        session()->put("unauthorized", true);
+                    }
+                } else {
+
+                    session()->put("errorLogin", true);
+                }
+            } else {
+                session()->put("errorLogin", true);
+            }
+        }
+        return redirect("/login");
     }
 
     /**

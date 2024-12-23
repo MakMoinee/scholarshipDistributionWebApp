@@ -42,35 +42,19 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav font-weight-bold mx-auto py-0">
-                    <a href="/" class="nav-item nav-link active">Home</a>
-                    <a href="#about" class="nav-item nav-link">About</a>
-                    <a href="#services" class="nav-item nav-link">Services</a>
-                    <a style="cursor: pointer;" data-toggle="modal" data-target="#signupModal"
-                        class="nav-item nav-link">Signup</a>
+                    <a href="/user_home" class="nav-item nav-link active">Home</a>
+                    <a href="/user_details" class="nav-item nav-link">My Details</a>
+                    <a href="/user_applications" class="nav-item nav-link">Applications</a>
+                    <a href="/user_transactions" class="nav-item nav-link">Transactions</a>
+                    <a href="/user_notifications" class="nav-item nav-link">Notifications <span
+                            class="bg-success text-white" style="padding: 2px;">0</span> </a>
+
                 </div>
-                <a href="/login" class="btn btn-primary px-4">Login</a>
+                <a href="/logout" class="btn btn-primary px-4">Logout</a>
             </div>
         </nav>
     </div>
     <!-- Navbar End -->
-
-
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary px-0 px-md-5 mb-5">
-        <div class="row align-items-center px-3">
-            <div class="col-lg-6 text-center text-lg-left">
-                <h4 class="text-white mb-4 mt-5 mt-lg-0">Block Scholar</h4>
-                <h1 class="display-3 font-weight-bold text-white">Transforming Scholarship Distribution</h1>
-                <p class="text-white mb-4">Making scholarships simple, secure, and fair for everyone with the power of
-                    blockchain technology.</p>
-                <a href="" class="btn btn-secondary mt-1 py-3 px-5">Learn More</a>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <img class="img-fluid mt-5" src="/img/header.png" alt="">
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
 
 
     <!-- About Start -->
@@ -214,9 +198,15 @@
             <div class="col-lg-3 col-md-6 mb-5">
                 <h3 class="text-primary mb-4">Quick Links</h3>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                    <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About Us</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Services</a>
+                    <a class="text-white mb-2" href="/user_home"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="/user_details"><i class="fa fa-angle-right mr-2"></i>My
+                        Details</a>
+                    <a class="text-white mb-2" href="/user_applications"><i
+                            class="fa fa-angle-right mr-2"></i>Applications</a>
+                    <a class="text-white mb-2" href="/user_transactions"><i
+                            class="fa fa-angle-right mr-2"></i>Transactions</a>
+                    <a class="text-white mb-2" href="/user_notifications"><i
+                            class="fa fa-angle-right mr-2"></i>Notifications</a>
                     <a class="text-white mb-2" href="/privacy"><i class="fa fa-angle-right mr-2"></i>Privacy
                         Policy</a>
                     <a class="text-white mb-2" href="/terms"><i class="fa fa-angle-right mr-2"></i>Terms &
@@ -250,78 +240,6 @@
                 <form action="/" method="post" autocomplete="off">
                     @csrf
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label class="text-dark" for="firstName">First Name:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <input required name="firstName" type="text" class="form-control" title="First Name">
-                        </div>
-                        <div class="form-group">
-                            <label class="text-dark" for="middleName">Middle Name:
-                            </label>
-                            <br>
-                            <input type="text" name="middleName" class="form-control" title="Middle Name">
-                        </div>
-                        <div class="form-group">
-                            <label class="text-dark" for="lastName">Last Name:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <input required type="text" name="lastName" class="form-control" title="Middle Name">
-                        </div>
-                        <div class="form-group">
-                            <label class="text-dark" for="address">Address:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <textarea required name="address" id="" cols="30" rows="3" class="form-control text-dark"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="text-dark" for="birthDate">Birth Date:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <input required type="date" max="{{ $maxDate }}" name="birthDate" id="birthDate"
-                                class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="text-dark" for="gender">Gender:<span class="text-danger">*</span></label>
-                            <br>
-                            <div class="row d-flex">
-                                <div class="col-lg-3 me-2">
-                                    <input type="radio" value="male" name="gender" id=""
-                                        style="cursor: pointer">
-                                    <label for="male" class="text-dark">Male</label>
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="radio" value="female" name="gender" id=""
-                                        style="cursor: pointer">
-                                    <label for="female" class="text-dark">Female</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="userType">User Type:<span class="text-danger">*</span></label>
-                            <br>
-                            <select name="userType" id="" class="form-control">
-                                <option value="">Select User Type ...</option>
-                                <option value="user">Student</option>
-                                <option value="org">Organization</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="text-dark">Email:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <input required type="email" name="email" id="" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="text-dark">Password:<span class="text-danger">*</span>
-                            </label>
-                            <br>
-                            <input required type="password" name="password" id="editPass" class="form-control">
-                            <input style="cursor: pointer;" type="checkbox" name="showPass" id=""
-                                onclick="showPassEvent()"> <label class="text-dark" for="show"
-                                id="showPassLabel">Show</label>
-                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -360,19 +278,19 @@
             }
         }
     </script>
-    @if (session()->pull('successUserCreate'))
+    @if (session()->pull('successLogin'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Successfully Created Account',
+                    title: 'Login Successfully',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successUserCreate') }}
+        {{ session()->forget('successLogin') }}
     @endif
     @if (session()->pull('errorUserCreate'))
         <script>

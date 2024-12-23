@@ -19,7 +19,7 @@
             </div>
         </div>
         <br>
-        <form action="/" method="POST">
+        <form action="/login" method="POST">
             @method('post')
             @csrf
             <div class="input-box">
@@ -29,7 +29,7 @@
                 <input type="password" name="password" placeholder="Enter password" required>
             </div>
             <div class="input-box button">
-                <input name="btnSubmit" type="Submit" value="Login">
+                <input name="btnLogin" type="Submit" value="Login">
             </div>
             <div class="text">
                 <h3>Don't have an account? <a href="/?signup=true">Sign Up</a></h3>

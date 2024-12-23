@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserHomeController;
+use App\Http\Controllers\UserMyDetailsController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $mDate =  date('Y-m-d', strtotime('-14 years'));
-    return view('welcome', ['maxDate' => $mDate]);
-});
+Route::resource('/', WelcomeController::class);
 
 Route::get('/privacy', function () {
     return view('privacy');
@@ -27,4 +27,11 @@ Route::get('/terms', function () {
     return view('terms');
 });
 
+Route::get('/logout', function () {
+    session()->flush();
+    return redirect("/");
+});
+
 Route::resource("/login", LoginController::class);
+Route::resource("/user_home", UserHomeController::class);
+Route::resource("/user_details", UserMyDetailsController::class);
