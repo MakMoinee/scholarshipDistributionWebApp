@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserApplicationsController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\UserMyDetailsController;
 use App\Http\Controllers\WelcomeController;
@@ -35,3 +36,4 @@ Route::get('/logout', function () {
 Route::resource("/login", LoginController::class);
 Route::resource("/user_home", UserHomeController::class);
 Route::resource("/user_details", UserMyDetailsController::class);
+Route::resource("/user_applications", UserApplicationsController::class);
