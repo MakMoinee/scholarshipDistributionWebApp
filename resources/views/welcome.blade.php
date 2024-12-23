@@ -43,10 +43,11 @@
                 <div class="navbar-nav font-weight-bold mx-auto py-0">
                     <a href="/" class="nav-item nav-link active">Home</a>
                     <a href="#about" class="nav-item nav-link">About</a>
-                    <a href="class.html" class="nav-item nav-link">Services</a>
-                    <a href="contact.html" class="nav-item nav-link">Signup</a>
+                    <a href="#services" class="nav-item nav-link">Services</a>
+                    <a style="cursor: pointer;" data-toggle="modal" data-target="#signupModal"
+                        class="nav-item nav-link">Signup</a>
                 </div>
-                <a href="" class="btn btn-primary px-4">Login</a>
+                <a href="/login" class="btn btn-primary px-4">Login</a>
             </div>
         </nav>
     </div>
@@ -238,6 +239,92 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+    <div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Create Your Account Now</h4>
+                </div>
+                <form action="/" method="post" autocomplete="off">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="text-dark" for="firstName">First Name:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <input required name="firstName" type="text" class="form-control" title="First Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark" for="middleName">Middle Name:
+                            </label>
+                            <br>
+                            <input type="text" name="middleName" class="form-control" title="Middle Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark" for="lastName">Last Name:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <input required type="text" name="lastName" class="form-control" title="Middle Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark" for="address">Address:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <textarea required name="address" id="" cols="30" rows="3" class="form-control text-dark"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark" for="birthDate">Birth Date:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <input required type="date" max="{{ $maxDate }}" name="birthDate" id="birthDate"
+                                class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark" for="gender">Gender:<span class="text-danger">*</span></label>
+                            <br>
+                            <div class="row d-flex">
+                                <div class="col-lg-3 me-2">
+                                    <input type="radio" value="male" name="gender" id=""
+                                        style="cursor: pointer">
+                                    <label for="male" class="text-dark">Male</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="radio" value="female" name="gender" id=""
+                                        style="cursor: pointer">
+                                    <label for="female" class="text-dark">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="text-dark">Email:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <input required type="email" name="email" id="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-dark">Password:<span class="text-danger">*</span>
+                            </label>
+                            <br>
+                            <input required type="password" name="password" id="editPass" class="form-control">
+                            <input style="cursor: pointer;" type="checkbox" name="showPass" id=""
+                                onclick="showPassEvent()"> <label class="text-dark" for="show"
+                                id="showPassLabel">Show</label>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="color:white !important;">Close</button>
+                        <button type="submit" class="btn btn-warning" name="btnCreateFlashCard" value="yes"
+                            style="color:white !important;">Proceed Creation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -253,6 +340,16 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+    <script>
+        function showPassEvent() {
+            let editPass = document.getElementById('editPass');
+            if (editPass.type === "password") {
+                editPass.type = "text";
+            } else {
+                editPass.type = "password";
+            }
+        }
+    </script>
 </body>
 
 </html>

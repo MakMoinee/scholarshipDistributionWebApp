@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $mDate =  date('Y-m-d', strtotime('-14 years'));
+    return view('welcome', ['maxDate' => $mDate]);
 });
 
 Route::get('/privacy', function () {
@@ -24,3 +26,5 @@ Route::get('/privacy', function () {
 Route::get('/terms', function () {
     return view('terms');
 });
+
+Route::resource("/login", LoginController::class);
