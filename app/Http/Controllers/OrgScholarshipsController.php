@@ -20,8 +20,9 @@ class OrgScholarshipsController extends Controller
             if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
-            return view('org.scholarships');
+            return view('org.scholarships', ['notifCount' => $notifCount]);
         }
         return redirect("/");
     }

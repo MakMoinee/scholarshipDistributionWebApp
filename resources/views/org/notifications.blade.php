@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Block Scholar</title>
+    <title>BlockScholar</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -28,10 +28,47 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
-        .bg-grey {
-            background-color: #f5f5f5 !important;
+        .text-primary {
+            color: #d73645 !important;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover,
+        .navbar-light .navbar-nav .nav-link.active {
+            color: #b8174d;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            padding: 30px 15px;
+            color: #000000;
+            outline: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6 {
+            margin-bottom: 0.5rem;
+            font-family: "Handlee", cursive;
+            font-weight: bold;
+            line-height: 1.2;
+            color: #000000;
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active,
+        .btn-primary:not(:disabled):not(.disabled).active,
+        .show>.btn-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #b8174d !important;
+            border-color: #b8174d !important;
         }
     </style>
 </head>
@@ -48,12 +85,13 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav font-weight-bold mx-auto py-0">
-                    <a href="/user_home" class="nav-item nav-link ">Home</a>
-                    <a href="/user_details" class="nav-item nav-link ">My Details</a>
-                    <a href="/user_applications" class="nav-item nav-link ">Applications</a>
-                    <a href="/user_transactions" class="nav-item nav-link">Transactions</a>
-                    <a href="/user_notifications" class="nav-item nav-link active">Notifications <span
-                            class="bg-success text-white" style="padding: 2px;">{{ $notifCount }}</span> </a>
+                    <a href="/org_home" class="nav-item nav-link ">Home</a>
+                    <a href="/org_details" class="nav-item nav-link ">My Details</a>
+                    <a href="/org_scholars" class="nav-item nav-link ">Scholarships</a>
+                    <a href="/org_applications" class="nav-item nav-link">Applications</a>
+                    <a href="/org_transactions" class="nav-item nav-link">Transactions</a>
+                    <a href="/org_notifications" class="nav-item nav-link active">Notifications <span
+                            class="bg-danger text-white" style="padding: 2px;">{{ $notifCount }}</span> </a>
 
                 </div>
                 <a href="/logout" class="btn btn-primary px-4">Logout</a>
@@ -100,7 +138,7 @@
                                                                     {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}</b>
                                                             </td>
                                                             <td class="text-center">
-                                                                <form action="/user_notifications" method="post">
+                                                                <form action="/org_notifications" method="post">
                                                                     @csrf
                                                                     <div class="row">
                                                                         <div
@@ -132,7 +170,7 @@
                                                                 {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
                                                             </td>
                                                             <td class="text-center">
-                                                                <form action="/user_notifications" method="post">
+                                                                <form action="/org_notifications" method="post">
                                                                     @csrf
                                                                     <div class="row">
                                                                         <div
@@ -168,7 +206,7 @@
 
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+    <div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
         <div class="row pt-5">
             <div class="col-lg-3 col-md-6 mb-5">
                 <a href="" class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0"
@@ -215,14 +253,14 @@
             <div class="col-lg-3 col-md-6 mb-5">
                 <h3 class="text-primary mb-4">Quick Links</h3>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white mb-2" href="/user_home"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                    <a class="text-white mb-2" href="/user_details"><i class="fa fa-angle-right mr-2"></i>My
+                    <a class="text-white mb-2" href="/org_home"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="/org_details"><i class="fa fa-angle-right mr-2"></i>My
                         Details</a>
-                    <a class="text-white mb-2" href="/user_applications"><i
+                    <a class="text-white mb-2" href="/org_applications"><i
                             class="fa fa-angle-right mr-2"></i>Applications</a>
-                    <a class="text-white mb-2" href="/user_transactions"><i
+                    <a class="text-white mb-2" href="/org_transactions"><i
                             class="fa fa-angle-right mr-2"></i>Transactions</a>
-                    <a class="text-white mb-2" href="/user_notifications"><i
+                    <a class="text-white mb-2" href="/org_notifications"><i
                             class="fa fa-angle-right mr-2"></i>Notifications</a>
                     <a class="text-white mb-2" href="/privacy"><i class="fa fa-angle-right mr-2"></i>Privacy
                         Policy</a>
@@ -247,6 +285,28 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+    <div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Create Your Account Now</h4>
+                </div>
+                <form action="/" method="post" autocomplete="off">
+                    @csrf
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="color:white !important;">Close</button>
+                        <button type="submit" class="btn btn-warning" name="btnSignup" value="yes"
+                            style="color:white !important;">Proceed Creation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     <!-- JavaScript Libraries -->
@@ -271,30 +331,6 @@
             } else {
                 editPass.type = "password";
             }
-        }
-
-        function updateButton() {
-            let btnUploadRequirements = document.getElementById('btnUploadRequirements');
-            let requireFile = document.getElementById('requireFile');
-            let btnClear = document.getElementById('btnClear');
-            btnClear.removeAttribute("style");
-            if (requireFile) {
-                btnUploadRequirements.innerHTML = requireFile.value;
-            } else {
-                btnUploadRequirements.innerHTML = 'Upload File';
-                btnClear.setAttribute("style", "display:none;");
-            }
-
-        }
-
-        function clearUpload() {
-            let btnUploadRequirements = document.getElementById('btnUploadRequirements');
-            let requireFile = document.getElementById('requireFile');
-            let btnClear = document.getElementById('btnClear');
-            requireFile.value = null;
-            btnUploadRequirements.innerHTML = 'Upload File';
-            btnClear.setAttribute("style", "display:none;");
-
         }
     </script>
     @if (session()->pull('successDelete'))
@@ -339,6 +375,7 @@
         </script>
         {{ session()->forget('successMarkAsRead') }}
     @endif
+
     @if (session()->pull('errorMarkAsRead'))
         <script>
             setTimeout(() => {
@@ -352,19 +389,6 @@
             }, 500);
         </script>
         {{ session()->forget('errorMarkAsRead') }}
-    @endif
-    @if (session()->pull('errorExistingApplication'))
-        <script>
-            setTimeout(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'You Have Existing Application',
-                    showConfirmButton: true,
-                });
-            }, 500);
-        </script>
-        {{ session()->forget('errorExistingApplication') }}
     @endif
 </body>
 

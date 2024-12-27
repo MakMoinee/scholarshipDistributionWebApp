@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class UserNotificationsController extends Controller
+class OrgNotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +16,16 @@ class UserNotificationsController extends Controller
             $user = session()->pull('users');
             session()->put("users", $user);
 
-            if ($user['userType'] != "user") {
+            if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
-
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
             $data = DB::table('notifications')
                 ->where('userID', '=', $user['userID'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-            return view('user.notifications', ['notifCount' => $notifCount, 'data' => $data]);
+            return view('org.notifications', ['notifCount' => $notifCount, 'data' => $data]);
         }
         return redirect("/");
     }
@@ -48,7 +47,7 @@ class UserNotificationsController extends Controller
             $user = session()->pull('users');
             session()->put("users", $user);
 
-            if ($user['userType'] != "user") {
+            if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
 
@@ -70,7 +69,8 @@ class UserNotificationsController extends Controller
                 }
             }
 
-            return redirect("/user_notifications");
+
+            return redirect("/org_notifications");
         }
         return redirect("/");
     }
