@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Scholarships;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrgScholarshipsController extends Controller
 {
@@ -37,7 +39,36 @@ class OrgScholarshipsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            if ($user['userType'] != "org") {
+                return redirect("/logout");
+            }
+
+            if ($request->btnSaveScholarship) {
+                $count = DB::table('scholarships')->where('userID', '=', $user['userID'])->where('scholarshipName', '=', $request->scholarshipName)->where('orgName', '=', $request->orgName)->count();
+                if ($count > 0) {
+                    session()->put("errorScholarExist", true);
+                } else {
+                    $newScholarship = new Scholarships();
+                    $newScholarship->userID = $user['userID'];
+                    $newScholarship->orgName = $request->orgName;
+                    $newScholarship->scholarshipName = $request->scholarshipName;
+                    $newScholarship->requirements = $request->requirements;
+                    $newScholarship->status = "active";
+                    $isSave = $newScholarship->save();
+                    if ($isSave) {
+                        session()->put("successAddScholarship", true);
+                    } else {
+                        session()->put("errorAddScholarship", true);
+                    }
+                }
+            }
+            return redirect("/org_scholars");
+        }
+        return redirect("/");
     }
 
     /**

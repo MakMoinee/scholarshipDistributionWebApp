@@ -147,12 +147,31 @@
                                                     <th class="text-center">Scholarship Name</th>
                                                     <th>Organized By</th>
                                                     <th class="text-center">Requirements</th>
-                                                    <th>Created By</th>
+                                                    <th>Created</th>
                                                     <th class="text-center">Action</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                                @foreach ($list as $item)
+                                                    <tr class="align-middle">
+                                                        <td class="text-center">
+                                                            {{ $item->scholarshipName }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->orgName }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-success">View Requirements</button>
+                                                        </td>
+                                                        <td>
+                                                            {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
+                                                        </td>
+                                                        <td class="text-center"></td>
+                                                        <td></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

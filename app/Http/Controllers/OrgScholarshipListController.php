@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrgScholarshipListController extends Controller
 {
@@ -19,7 +20,12 @@ class OrgScholarshipListController extends Controller
                 return redirect("/logout");
             }
 
-            return view('org.sch_list');
+            $list = DB::table('scholarships')
+                ->where('userID', '=', $user['userID'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            return view('org.sch_list', ['list' => $list]);
         }
         return redirect("/");
     }

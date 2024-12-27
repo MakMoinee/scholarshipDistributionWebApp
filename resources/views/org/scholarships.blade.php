@@ -102,7 +102,7 @@
 
     <div class="container-fluid py-5">
         <div class="container">
-            <form action="/user_details" method="post" enctype="multipart/form-data">
+            <form action="/org_scholars" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-lg-12">
@@ -288,33 +288,47 @@
             }
         }
     </script>
-    @if (session()->pull('successLogin'))
+    @if (session()->pull('successAddScholarship'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Login Successfully',
+                    title: 'Successfully Added Scholarship',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successLogin') }}
+        {{ session()->forget('successAddScholarship') }}
     @endif
-    @if (session()->pull('errorUserCreate'))
+    @if (session()->pull('errorAddScholarship'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Sign Up, Please Try Again',
+                    title: 'Failed To Add Scholarship, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorUserCreate') }}
+        {{ session()->forget('errorAddScholarship') }}
+    @endif
+
+    @if (session()->pull('errorScholarExist'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Failed To Add Scholarship, Scholarship Name Already Exists',
+                    showConfirmButton: true,
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('errorScholarExist') }}
     @endif
 </body>
 
