@@ -8,6 +8,7 @@ use App\Http\Controllers\OrgScholarshipsController;
 use App\Http\Controllers\UserApplicationsController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\UserMyDetailsController;
+use App\Http\Controllers\UserViewRequirementsController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,3 +46,4 @@ Route::resource("/org_home", OrgHomeController::class);
 Route::resource("/org_details", OrgDetailsController::class);
 Route::resource("/org_scholars", OrgScholarshipsController::class);
 Route::resource("/org_sch_list", OrgScholarshipListController::class);
+Route::get("/user_available_sch", [UserViewRequirementsController::class, 'index']);

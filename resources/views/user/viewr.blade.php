@@ -64,73 +64,31 @@
 
     <div class="container-fluid py-5">
         <div class="container">
-            <form action="/user_details" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <h3>Applications</h3>
-                                    </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card bg-white">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h2>{{ $req['scholarshipName'] }} Requirements</h2>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-lg-12">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#newApplicationModal">Submit New Application</button>
-                                    </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-12">
+                                    <p class="text-dark" style="text-justify: initial;">
+                                        {{ $req['requirements'] }}
+                                    </p>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <br>
-                                        <div class="table-responsive">
-                                            <table class="table border mb-0">
-                                                <thead class="table-dark fw-semibold">
-                                                    <tr class="align-middle">
-                                                        <th class="text-center">
-                                                        </th>
-                                                        <th>Scholarship Name</th>
-                                                        <th class="text-center">Your Payment Address</th>
-                                                        <th>Status</th>
-                                                        <th class="text-center">Created By</th>
-                                                        <th>Action</th>
-                                                        <th class="text-center"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($applications as $item)
-                                                        <tr class="align-middle text-dark">
-                                                            <td class="text-center"></td>
-                                                            <td>
-                                                                @foreach ($scholarships as $s)
-                                                                    @if ($s['id'] == $item->scholarshipID)
-                                                                        {{ $s['scholarshipName'] }}
-                                                                    @endif
-                                                                @endforeach
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ $item->paymentAddress }}
-                                                            </td>
-                                                            <td>
-                                                                {{ $item->status }}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
-                                                            </td>
-                                                            <td></td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 mx-auto">
+                                    <button class="btn btn-success" onclick="window.close();">Close Page</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -215,70 +173,6 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <div class="modal fade " id="newApplicationModal" tabindex="-1" role="dialog"
-        aria-labelledby="newApplicationModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>New Scholarship Application</h4>
-                </div>
-                <form action="/user_applications" method="post" autocomplete="off" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="studentName" class="text-dark">Student Name:</label>
-                            <input required readonly type="text" name="" id=""
-                                class="form-control"
-                                value="{{ $user['firstName'] }} {{ $user['middleName'] }} {{ $user['lastName'] }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="scholarship" class="text-dark">Scholarship:<span
-                                    class="text-danger">*</span></label>
-                            <select required name="scholarship" id="scholarship" class="form-control text-dark">
-                                <option value="">Select Available Scholarship ...</option>
-                                @foreach ($scholarships as $item)
-                                    <option value="{{ $item['id'] }}"> {{ $item['scholarshipName'] }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentAddress" class="text-dark">Your Meta Mask Payment Address:<span
-                                    class="text-danger">*</span></label>
-                            <input required type="text" name="paymentAddress" id=""
-                                class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="viewRequirements" class="text-dark">Scholarship Requirements</label>
-                            <br>
-                            <button type="button" class="btn btn-success justify-content-center d-flex"
-                                onclick="window.open(`/user_available_sch?id=${document.getElementById('scholarship').value}`, '_blank')">
-                                View Requirements
-                            </button>
-                        </div>
-                        <div class="form-group">
-                            <label class="text-dark" for="requirements">Your Requirements:<span
-                                    class="text-danger">*</span> </label>
-                            <br>
-                            <button class="btn btn-primary float-left mr-2" id="btnUploadRequirements" type="button"
-                                onclick="document.getElementById('requireFile').click()">Upload File</button>
-                            <button class="btn btn-danger" style="display: none" id="btnClear" type="button"
-                                onclick="clearUpload()">Clear</button>
-
-                            <input required type="file" name="requirements" id="requireFile" class="invisible"
-                                accept=".pdf" onchange="updateButton();">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="color:white !important;">Close</button>
-                        <button type="submit" class="btn btn-success text-white" name="btnApplyScholarship"
-                            value="yes" style="color:white !important;">Apply</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -328,46 +222,33 @@
 
         }
     </script>
-    @if (session()->pull('successApply'))
+    @if (session()->pull('successLogin'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Successfully Applied Scholarship',
+                    title: 'Login Successfully',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successApply') }}
+        {{ session()->forget('successLogin') }}
     @endif
-    @if (session()->pull('errorApply'))
+    @if (session()->pull('errorUserCreate'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Apply, Please Try Again',
+                    title: 'Failed To Sign Up, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorApply') }}
-    @endif
-    @if (session()->pull('errorExistingApplication'))
-        <script>
-            setTimeout(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'You Have Existing Application',
-                    showConfirmButton: true,
-                });
-            }, 500);
-        </script>
-        {{ session()->forget('errorExistingApplication') }}
+        {{ session()->forget('errorUserCreate') }}
     @endif
 </body>
 

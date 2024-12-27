@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Applications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,8 +22,12 @@ class UserApplicationsController extends Controller
             }
 
             $allScholarships = json_decode(DB::table('scholarships')->get(), true);
+            $allApplications = DB::table('applications')
+                ->where('userID', '=', $user['userID'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
 
-            return view('user.applications', ['user' => $user, 'scholarships' => $allScholarships]);
+            return view('user.applications', ['user' => $user, 'scholarships' => $allScholarships, 'applications' => $allApplications]);
         }
         return redirect("/");
     }
@@ -40,7 +45,57 @@ class UserApplicationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            if ($user['userType'] != "user") {
+                return redirect("/logout");
+            }
+
+            if ($request->btnApplyScholarship) {
+                $existCount = DB::table('applications')->where('userID', '=', $user['userID'])->where('scholarshipID', '=', $request->scholarship)->where('status', '=', 'active')->count();
+                if ($existCount > 0) {
+                    session()->put("errorExistingApplication", true);
+                } else {
+                    $newApply = new Applications();
+                    $newApply->userID = $user['userID'];
+                    $newApply->scholarshipID = $request->scholarship;
+                    $newApply->paymentAddress = $request->paymentAddress;
+
+                    $files = $request->file('requirements');
+                    $fileName = "";
+
+                    if ($files) {
+                        $mimeType = $files->getMimeType();
+                        if ($mimeType == "application/pdf") {
+                            $destinationPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/applications';
+                            $fileName = strtotime(now()) . "." . $files->getClientOriginalExtension();
+                            $isFile = $files->move($destinationPath,  $fileName);
+                            chmod($destinationPath, 0755);
+
+                            if ($isFile) {
+                                $newApply->requirementFile = $fileName;
+                                $newApply->status = "active";
+                                $isSave = $newApply->save();
+                                if ($isSave) {
+                                    session()->put("successApply", true);
+                                } else {
+                                    session()->put("errorApply", true);
+                                }
+                            }
+                        } else {
+                            session()->put("invalidFileFormat", true);
+                        }
+                    } else {
+                        session()->put("noFileAttached", true);
+                    }
+                }
+            }
+
+            return redirect("/user_applications");
+        }
+        return redirect("/");
     }
 
     /**
