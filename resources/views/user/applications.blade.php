@@ -237,7 +237,8 @@
                             <select required name="scholarship" id="scholarship" class="form-control text-dark">
                                 <option value="">Select Available Scholarship ...</option>
                                 @foreach ($scholarships as $item)
-                                    <option value="{{ $item['id'] }}"> {{ $item['scholarshipName'] }} </option>
+                                    <option value="{{ $item['id'] }}" owner="{{ $item['userID'] }}">
+                                        {{ $item['scholarshipName'] }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -266,6 +267,7 @@
 
                             <input required type="file" name="requirements" id="requireFile" class="invisible"
                                 accept=".pdf" onchange="updateButton();">
+                            <input type="hidden" name="ownerID" id="ownerID" class="invisible">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -317,6 +319,16 @@
             }
 
         }
+
+        document.getElementById('scholarship').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex]; // Get the selected option
+            const ownerValue = selectedOption.getAttribute('owner'); // Get the 'owner' attribute
+            console.log('Owner Attribute Value:', ownerValue);
+            if (ownerValue) {
+                let ownerID = document.getElementById('ownerID');
+                ownerID.value = ownerValue;
+            }
+        });
 
         function clearUpload() {
             let btnUploadRequirements = document.getElementById('btnUploadRequirements');

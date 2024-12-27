@@ -56,6 +56,7 @@ class OrgScholarshipsController extends Controller
                     $newScholarship->userID = $user['userID'];
                     $newScholarship->orgName = $request->orgName;
                     $newScholarship->scholarshipName = $request->scholarshipName;
+                    $newScholarship->scholarshipAmount = $request->scholarshipAmount;
                     $newScholarship->requirements = $request->requirements;
                     $newScholarship->status = "active";
                     $isSave = $newScholarship->save();

@@ -111,19 +111,26 @@
                                 <h2>Scholarships</h2>
                                 <br>
                                 <div class="row mt-2">
-                                    <div class="col-lg-6 mx-auto">
+                                    <div class="col-lg-4 mx-auto">
                                         <label class="text-dark" for="orgName">Organization Name:<span
                                                 class="text-danger">*</span>
                                         </label>
                                         <input required type="text" name="orgName" id=""
                                             class="form-control">
                                     </div>
-                                    <div class="col-lg-6 mx-auto">
+                                    <div class="col-lg-4 mx-auto">
                                         <label class="text-dark" for="scholarshipName">Scholarship Name:<span
                                                 class="text-danger">*</span>
                                         </label>
                                         <input required type="text" name="scholarshipName" id=""
                                             class="form-control">
+                                    </div>
+                                    <div class="col-lg-4 mx-auto">
+                                        <label class="text-dark" for="scholarshipName">Scholarship Amount:<span
+                                                class="text-danger">*</span>
+                                        </label>
+                                        <input required type="number" step="1" name="scholarshipAmount"
+                                            id="" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row mt-4">

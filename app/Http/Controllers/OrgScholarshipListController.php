@@ -19,13 +19,14 @@ class OrgScholarshipListController extends Controller
             if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
             $list = DB::table('scholarships')
                 ->where('userID', '=', $user['userID'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-            return view('org.sch_list', ['list' => $list]);
+            return view('org.sch_list', ['list' => $list,'notifCount'=>$notifCount]);
         }
         return redirect("/");
     }

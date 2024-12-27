@@ -21,13 +21,14 @@ class OrgApplicationsController extends Controller
             if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
             $allData = DB::table('vwapplications')
                 ->where('userID', '=', $user['userID'])
                 ->orderBy('applicationCreateDate', 'desc')
                 ->paginate(10);
 
-            return view('org.applications', ['applications' => $allData]);
+            return view('org.applications', ['applications' => $allData, 'notifCount' => $notifCount]);
         }
         return redirect("/");
     }

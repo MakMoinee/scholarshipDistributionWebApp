@@ -19,11 +19,13 @@ class OrgReviewApplicantController extends Controller
 
             $id = $request->query('id');
             if ($id) {
+                $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
                 $data = json_decode(DB::table('vwapplications')->where('applicationID', '=', $id)->get(), true);
 
                 return view('org.review', [
-                    'data' => $data[0]
+                    'data' => $data[0],
+                    'notifCount' => $notifCount
                 ]);
             }
 

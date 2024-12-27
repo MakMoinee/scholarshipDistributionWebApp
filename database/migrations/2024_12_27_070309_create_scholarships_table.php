@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('userID');
             $table->string('orgName', 100);
             $table->string('scholarshipName', 255);
+            $table->decimal('scholarshipAmount', 10, 4);
             $table->text('requirements');
             $table->string('status', 20);
             $table->timestamps();

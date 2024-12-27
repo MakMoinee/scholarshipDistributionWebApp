@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrgHomeController extends Controller
 {
@@ -18,8 +19,9 @@ class OrgHomeController extends Controller
             if ($user['userType'] != "org") {
                 return redirect("/logout");
             }
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
-            return view('org.home');
+            return view('org.home', ['notifCount' => $notifCount]);
         }
         return redirect("/");
     }

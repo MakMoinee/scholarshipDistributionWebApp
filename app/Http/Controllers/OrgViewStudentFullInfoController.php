@@ -19,13 +19,15 @@ class OrgViewStudentFullInfoController extends Controller
 
             $id = $request->query('id');
             if ($id) {
+                $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
                 $data = json_decode(DB::table('students')->where('id', '=', $id)->get(), true);
 
                 $mDate =  date('Y-m-d', strtotime('-14 years'));
                 return view('org.studentinfo', [
                     'data' => count($data) == 0 ? [] : $data[0],
-                    'maxDate' => $mDate
+                    'maxDate' => $mDate,
+                    'notifCount' => $notifCount
                 ]);
             }
 

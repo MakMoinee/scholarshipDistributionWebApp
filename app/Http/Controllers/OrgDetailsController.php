@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrgDetailsController extends Controller
 {
@@ -20,9 +21,11 @@ class OrgDetailsController extends Controller
             }
 
 
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
+
             $mDate =  date('Y-m-d', strtotime('-14 years'));
 
-            return view('org.details', ['user' => $user, 'maxDate' => $mDate]);
+            return view('org.details', ['user' => $user, 'maxDate' => $mDate, 'notifCount' => $notifCount]);
         }
         return redirect("/");
     }

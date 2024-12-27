@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Applications;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -81,6 +82,11 @@ class UserApplicationsController extends Controller
                                 $isSave = $newApply->save();
                                 if ($isSave) {
                                     session()->put("successApply", true);
+                                    $newNotif = new Notifications();
+                                    $newNotif->userID = $request->ownerID;
+                                    $newNotif->message = "A Student Applies In One Of Your Scholarship Programs, Please Check Applications Page";
+                                    $newNotif->status = "unread";
+                                    $newNotif->save();
                                 } else {
                                     session()->put("errorApply", true);
                                 }
