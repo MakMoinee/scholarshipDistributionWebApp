@@ -57,7 +57,11 @@ class WelcomeController extends Controller
                 $newUser->email = $request->email;
                 $newUser->password = Hash::make($request->password);
                 $newUser->userType = $request->userType;
-                $newUser->status = "active";
+                if ($request->userType == "org") {
+                    $newUser->status = "unapproved";
+                } else if ($request->userType == "user") {
+                    $newUser->status = "active";
+                }
                 $isSave = $newUser->save();
                 if ($isSave) {
                     session()->put("successUserCreate", true);

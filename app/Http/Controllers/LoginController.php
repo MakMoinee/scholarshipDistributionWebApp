@@ -49,6 +49,10 @@ class LoginController extends Controller
                         session()->put("successLogin", true);
                         session()->put("users", $user);
                         return redirect("/user_home");
+                    } else if ($user['userType'] == "org" && $user['status'] == "active") {
+                        session()->put("successLogin", true);
+                        session()->put("users", $user);
+                        return redirect("/org_home");
                     } else {
                         session()->put("unauthorized", true);
                     }

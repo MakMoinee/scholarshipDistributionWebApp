@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrgDetailsController;
+use App\Http\Controllers\OrgHomeController;
+use App\Http\Controllers\OrgScholarshipListController;
+use App\Http\Controllers\OrgScholarshipsController;
 use App\Http\Controllers\UserApplicationsController;
 use App\Http\Controllers\UserHomeController;
 use App\Http\Controllers\UserMyDetailsController;
@@ -37,3 +41,7 @@ Route::resource("/login", LoginController::class);
 Route::resource("/user_home", UserHomeController::class);
 Route::resource("/user_details", UserMyDetailsController::class);
 Route::resource("/user_applications", UserApplicationsController::class);
+Route::resource("/org_home", OrgHomeController::class);
+Route::resource("/org_details", OrgDetailsController::class);
+Route::resource("/org_scholars", OrgScholarshipsController::class);
+Route::resource("/org_sch_list", OrgScholarshipListController::class);
