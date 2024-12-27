@@ -115,74 +115,48 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h3>Applications</h3>
+                                    <h3>Review Application</h3>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-4">
+                                    <label for="firstName" class="text-dark">Student Name:</label>
+                                    <p class="text-dark" id="studentFN">
+                                        {{ $data['firstName'] }} {{ $data['middleName'] }} {{ $data['lastName'] }}
+                                    </p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="studentInfo" class="text-dark">Student Information:</label>
+                                    <button class="btn btn-success justify-content-center d-flex"
+                                        onclick="window.open('/org_review_student?id={{ $data['studentID'] }}','_blank')">
+                                        View Full Info
+                                    </button>
+                                </div>
+                                <div class="col-lg-4"></div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-12">
+                                    <h6>Attachments</h6>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form action="/org_applications" method="get">
-                                        @method('get')
-                                        @csrf
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-lg-12 d-flex">
-                                                    <input required type="search" name="search" id=""
-                                                        class="form-control mr-2">
-                                                    <button type="submit" class="btn btn-success me-2"
-                                                        id="btnSearch">Search</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <embed style="height: 600px;" class="embed-responsive mt-2" id="pdfViewer"
+                                        src="/storage/applications/{{ $data['requirementFile'] }}"
+                                        type="application/pdf">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table class="table border mb-0">
-                                            <thead class="table-dark fw-semibold">
-                                                <tr class="align-middle">
-                                                    <th>Student Name</th>
-                                                    <th class="text-center">Scholarship Name</th>
-                                                    <th>Organized By</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th>Created</th>
-                                                    <th class="text-center">Action</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($applications as $item)
-                                                    <tr class="align-middle">
-                                                        <td>
-                                                            {{ $item->firstName }} {{ $item->middleName }}
-                                                            {{ $item->lastName }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {{ $item->scholarshipName }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $item->orgName }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {{ $item->applicationStatus }}
-                                                        </td>
-                                                        <td>
-                                                            {{ (new DateTime($item->applicationCreateDate))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <button
-                                                                onclick="window.open('/org_review_appl?id={{ $item->applicationID }}')"
-                                                                title="Review"
-                                                                class="btn btn-primary justify-content-center d-flex">
-                                                                <img src="/review.svg" alt="" srcset="">
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-12">
+                                    <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
+                                    <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-12 d-flex">
+                                    <button type="button" class="btn btn-secondary mr-2"
+                                        onclick="window.close();">Close</button>
+                                    <button type="submit" class="btn btn-primary me-2">Approve</button>
                                 </div>
                             </div>
                         </div>
@@ -283,36 +257,7 @@
                 <form id="reviewScholarForm" action="/org_applications" method="post" autocomplete="off">
                     @csrf
                     <div class="modal-body">
-                        <div class="row mt-2">
-                            <div class="col-lg-4">
-                                <label for="firstName" class="text-dark">Student Name:</label>
-                                <p class="text-dark" id="studentFN"></p>
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="studentInfo" class="text-dark">Student Information:</label>
-                                <button class="btn btn-success justify-content-center d-flex">
-                                    View Full Info
-                                </button>
-                            </div>
-                            <div class="col-lg-4"></div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-12">
-                                <h6>Attachments</h6>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <embed style="height: 600px;" class="embed-responsive mt-2" id="pdfViewer"
-                                    src="sample.pdf" type="application/pdf">
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-lg-12">
-                                <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
-                                <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
