@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserMyDetailsController extends Controller
 {
@@ -19,9 +20,10 @@ class UserMyDetailsController extends Controller
                 return redirect("/logout");
             }
 
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
             $mDate =  date('Y-m-d', strtotime('-14 years'));
-            return view('user.mydetails', ['user' => $user, 'maxDate' => $mDate]);
+            return view('user.mydetails', ['user' => $user, 'maxDate' => $mDate, 'notifCount' => $notifCount]);
         }
         return redirect("/");
     }

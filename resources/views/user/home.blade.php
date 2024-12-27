@@ -47,7 +47,7 @@
                     <a href="/user_applications" class="nav-item nav-link">Applications</a>
                     <a href="/user_transactions" class="nav-item nav-link">Transactions</a>
                     <a href="/user_notifications" class="nav-item nav-link">Notifications <span
-                            class="bg-success text-white" style="padding: 2px;">0</span> </a>
+                            class="bg-success text-white" style="padding: 2px;">{{ $notifCount }}</span> </a>
 
                 </div>
                 <a href="/logout" class="btn btn-primary px-4">Logout</a>

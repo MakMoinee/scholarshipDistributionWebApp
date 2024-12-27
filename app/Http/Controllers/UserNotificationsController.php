@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ApplicationRemarks;
-use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class OrgApplicationsController extends Controller
+class UserNotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,16 +16,17 @@ class OrgApplicationsController extends Controller
             $user = session()->pull('users');
             session()->put("users", $user);
 
-            if ($user['userType'] != "org") {
+            if ($user['userType'] != "user") {
                 return redirect("/logout");
             }
 
-            $allData = DB::table('vwapplications')
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
+            $data = DB::table('notifications')
                 ->where('userID', '=', $user['userID'])
-                ->orderBy('applicationCreateDate', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-            return view('org.applications', ['applications' => $allData]);
+            return view('user.notifications', ['notifCount' => $notifCount, 'data' => $data]);
         }
         return redirect("/");
     }
@@ -49,29 +48,22 @@ class OrgApplicationsController extends Controller
             $user = session()->pull('users');
             session()->put("users", $user);
 
-            if ($user['userType'] != "org") {
+            if ($user['userType'] != "user") {
                 return redirect("/logout");
             }
 
-            if ($request->btnUpdateAppl) {
-                $newRemarks = new ApplicationRemarks();
-                $newRemarks->studentID = $request->studentID;
-                $newRemarks->remarks = $request->remarks;
-                $isSave = $newRemarks->save();
-                if ($isSave) {
-                    session()->put("successAddRemarks", true);
-                    $newNotif = new Notifications();
-                    $newNotif->userID = $request->studentID;
-                    $newNotif->message = $request->remarks;
-                    $newNotif->status = 'unread';
-                    $newNotif->save();
+            if ($request->btnMarkRead) {
+                $updateCount = DB::table('notifications')->where('id', '=', $request->notifID)->update([
+                    "status" => "read"
+                ]);
+                if ($updateCount > 0) {
+                    session()->put("successMarkAsRead", true);
                 } else {
-                    session()->put("errorAddRemarks", true);
+                    session()->put("errorMarkAsRead", true);
                 }
-            } else if ($request->btnApprove) {
             }
 
-            return redirect("/org_applications");
+            return redirect("/user_notifications");
         }
         return redirect("/");
     }

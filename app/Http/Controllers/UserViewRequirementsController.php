@@ -20,9 +20,12 @@ class UserViewRequirementsController extends Controller
 
             $id = $request->query('id');
             if ($id) {
+                $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
+
                 $data = json_decode(DB::table('scholarships')->where('id', '=', $id)->get(), true);
                 return view('user.viewr', [
-                    'req' => $data[0]
+                    'req' => $data[0],
+                    'notifCount' => $notifCount
                 ]);
             }
 

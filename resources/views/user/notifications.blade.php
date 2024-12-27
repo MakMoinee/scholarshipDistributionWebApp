@@ -50,9 +50,9 @@
                 <div class="navbar-nav font-weight-bold mx-auto py-0">
                     <a href="/user_home" class="nav-item nav-link ">Home</a>
                     <a href="/user_details" class="nav-item nav-link ">My Details</a>
-                    <a href="/user_applications" class="nav-item nav-link active">Applications</a>
+                    <a href="/user_applications" class="nav-item nav-link ">Applications</a>
                     <a href="/user_transactions" class="nav-item nav-link">Transactions</a>
-                    <a href="/user_notifications" class="nav-item nav-link">Notifications <span
+                    <a href="/user_notifications" class="nav-item nav-link active">Notifications <span
                             class="bg-success text-white" style="padding: 2px;">{{ $notifCount }}</span> </a>
 
                 </div>
@@ -66,23 +66,97 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card bg-white">
-                        <div class="card-body ">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h2>{{ $req['scholarshipName'] }} Requirements</h2>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-lg-12">
-                                    <p class="text-dark" style="text-justify: initial;">
-                                        {{ $req['requirements'] }}
-                                    </p>
+                                    <h3>Notifications</h3>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-2 mx-auto">
-                                    <button class="btn btn-success" onclick="window.close();">Close Page</button>
+                                <div class="col-md-12">
+                                    <br>
+                                    <div class="table-responsive">
+                                        <table class="table border mb-0">
+                                            <thead class="table-dark fw-semibold">
+                                                <tr class="align-middle">
+                                                    <th class="text-center">
+                                                        Message
+                                                    </th>
+                                                    <th>Date</th>
+                                                    <th class="text-center">Action</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($data as $item)
+                                                    <tr class="align-middle">
+                                                        @if ($item->status == 'unread')
+                                                            <td class="text-center">
+                                                                <b>{{ \Illuminate\Support\Str::words($item->message, 5, '...') }}</b>
+                                                            </td>
+                                                            <td>
+                                                                <b>
+                                                                    {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}</b>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <form action="/user_notifications" method="post">
+                                                                    @csrf
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="col-lg-12 justify-content-center d-flex">
+                                                                            <button type="submit" title="Mark As Read"
+                                                                                class="btn btn-secondary "
+                                                                                name="btnMarkRead" value="yes">
+                                                                                <img src="/read.svg" alt=""
+                                                                                    srcset="">
+                                                                            </button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger ml-2"
+                                                                                name="btnDeleteNotif" value="yes">
+                                                                                <img src="/delete.svg" alt=""
+                                                                                    srcset="">
+                                                                            </button>
+                                                                            <input type="hidden"
+                                                                                value="{{ $item->id }}"
+                                                                                name="notifID" class="invisible">
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </td>
+                                                        @else
+                                                            <td class="text-center">
+                                                                {{ \Illuminate\Support\Str::words($item->message, 5, '...') }}
+                                                            </td>
+                                                            <td>
+                                                                {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <form action="/user_notifications" method="post">
+                                                                    @csrf
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="col-lg-12 justify-content-center d-flex">
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger ml-2"
+                                                                                name="btnDeleteNotif" value="yes">
+                                                                                <img src="/delete.svg" alt=""
+                                                                                    srcset="">
+                                                                            </button>
+                                                                            <input type="hidden"
+                                                                                value="{{ $item->id }}"
+                                                                                name="notifID" class="invisible">
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </td>
+                                                        @endif
+
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -174,6 +248,7 @@
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -222,33 +297,46 @@
 
         }
     </script>
-    @if (session()->pull('successLogin'))
+    @if (session()->pull('successMarkAsRead'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Login Successfully',
+                    title: 'Successfully Mark As Read The Notification',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successLogin') }}
+        {{ session()->forget('successMarkAsRead') }}
     @endif
-    @if (session()->pull('errorUserCreate'))
+    @if (session()->pull('errorMarkAsRead'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Sign Up, Please Try Again',
+                    title: 'Failed To Mark As Read The Notification Record, Please Try Again Later',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorUserCreate') }}
+        {{ session()->forget('errorMarkAsRead') }}
+    @endif
+    @if (session()->pull('errorExistingApplication'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'You Have Existing Application',
+                    showConfirmButton: true,
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('errorExistingApplication') }}
     @endif
 </body>
 

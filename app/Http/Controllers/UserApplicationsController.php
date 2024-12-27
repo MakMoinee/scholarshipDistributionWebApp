@@ -20,6 +20,7 @@ class UserApplicationsController extends Controller
             if ($user['userType'] != "user") {
                 return redirect("/logout");
             }
+            $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
             $allScholarships = json_decode(DB::table('scholarships')->get(), true);
             $allApplications = DB::table('applications')
@@ -27,7 +28,7 @@ class UserApplicationsController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-            return view('user.applications', ['user' => $user, 'scholarships' => $allScholarships, 'applications' => $allApplications]);
+            return view('user.applications', ['notifCount' => $notifCount, 'user' => $user, 'scholarships' => $allScholarships, 'applications' => $allApplications]);
         }
         return redirect("/");
     }
