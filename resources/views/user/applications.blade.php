@@ -211,14 +211,38 @@
                         <div class="form-group">
                             <label for="scholarship" class="text-dark">Scholarship:<span
                                     class="text-danger">*</span></label>
-                            <select required name="scholarship" id="" class="form-control">
+                            <select required name="scholarship" id="scholarship" class="form-control text-dark">
                                 <option value="">Select Available Scholarship ...</option>
+                                @foreach ($scholarships as $item)
+                                    <option value="{{ $item['id'] }}"> {{ $item['scholarshipName'] }} </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="paymentAddress" class="text-dark">Meta Mask Payment Address:<span
                                     class="text-danger">*</span></label>
-                            <input required type="text" name="paymentAddress" id="" class="form-control">
+                            <input required type="text" name="paymentAddress" id=""
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="viewRequirements" class="text-dark">Scholarship Requirements</label>
+                            <br>
+                            <button type="button" class="btn btn-success justify-content-center d-flex"
+                                onclick="window.open(`/user_available_sch?id=${document.getElementById('scholarship').value}`, '_blank')">
+                                View Requirements
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark" for="requirements">Your Requirements:<span
+                                    class="text-danger">*</span> </label>
+                            <br>
+                            <button class="btn btn-primary float-left mr-2" id="btnUploadRequirements" type="button"
+                                onclick="document.getElementById('requireFile').click()">Upload File</button>
+                            <button class="btn btn-danger" style="display: none" id="btnClear" type="button"
+                                onclick="clearUpload()">Clear</button>
+
+                            <input required type="file" name="requirements" id="requireFile" class="invisible"
+                                accept=".pdf" onchange="updateButton();">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -255,6 +279,30 @@
             } else {
                 editPass.type = "password";
             }
+        }
+
+        function updateButton() {
+            let btnUploadRequirements = document.getElementById('btnUploadRequirements');
+            let requireFile = document.getElementById('requireFile');
+            let btnClear = document.getElementById('btnClear');
+            btnClear.removeAttribute("style");
+            if (requireFile) {
+                btnUploadRequirements.innerHTML = requireFile.value;
+            } else {
+                btnUploadRequirements.innerHTML = 'Upload File';
+                btnClear.setAttribute("style", "display:none;");
+            }
+
+        }
+
+        function clearUpload() {
+            let btnUploadRequirements = document.getElementById('btnUploadRequirements');
+            let requireFile = document.getElementById('requireFile');
+            let btnClear = document.getElementById('btnClear');
+            requireFile.value = null;
+            btnUploadRequirements.innerHTML = 'Upload File';
+            btnClear.setAttribute("style", "display:none;");
+
         }
     </script>
     @if (session()->pull('successLogin'))

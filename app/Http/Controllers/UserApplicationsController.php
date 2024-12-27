@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserApplicationsController extends Controller
 {
@@ -19,7 +20,9 @@ class UserApplicationsController extends Controller
                 return redirect("/logout");
             }
 
-            return view('user.applications', ['user' => $user]);
+            $allScholarships = json_decode(DB::table('scholarships')->get(), true);
+
+            return view('user.applications', ['user' => $user, 'scholarships' => $allScholarships]);
         }
         return redirect("/");
     }

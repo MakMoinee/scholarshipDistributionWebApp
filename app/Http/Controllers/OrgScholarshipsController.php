@@ -98,8 +98,27 @@ class OrgScholarshipsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Request $request)
     {
-        //
+        if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            if ($user['userType'] != "org") {
+                return redirect("/logout");
+            }
+
+            if ($request->btnDeleteScholar) {
+                $deleteCount = DB::table('scholarships')->where('id', '=', $id)->delete();
+                if ($deleteCount > 0) {
+                    session()->put("successDeleteScholarship", true);
+                } else {
+                    session()->put("errorDeleteScholarship", true);
+                }
+            }
+
+            return redirect("/org_sch_list");
+        }
+        return redirect("/");
     }
 }

@@ -70,6 +70,10 @@
             background-color: #b8174d !important;
             border-color: #b8174d !important;
         }
+
+        td {
+            color: #000000;
+        }
     </style>
 </head>
 
@@ -139,7 +143,6 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <br>
                                     <div class="table-responsive">
                                         <table class="table border mb-0">
                                             <thead class="table-dark fw-semibold">
@@ -162,17 +165,51 @@
                                                             {{ $item->orgName }}
                                                         </td>
                                                         <td class="text-center">
-                                                            <button class="btn btn-success">View Requirements</button>
+                                                            <button
+                                                                onclick="updateRequirements('{{ $item->requirements }}')"
+                                                                data-toggle="modal"
+                                                                data-target="#viewScholarDetailModal"
+                                                                class="btn btn-success d-flex justify-content-center mx-auto">
+                                                                <img src="/view.svg" alt="" srcset="">
+                                                            </button>
                                                         </td>
                                                         <td>
                                                             {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
                                                         </td>
-                                                        <td class="text-center"></td>
+                                                        <td class="text-center">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 d-flex">
+                                                                    <button
+                                                                        onclick="deleteScholar({{ $item->id }})"
+                                                                        data-toggle="modal"
+                                                                        data-target="#deleteScholarModal"
+                                                                        class="btn btn-danger d-flex justify-content-center mx-auto">
+                                                                        <img src="/delete.svg" alt=""
+                                                                            srcset="">
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td></td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="pagination">
+                                                <ul class="pagination">
+                                                    @for ($i = 1; $i <= $list->lastPage(); $i++)
+                                                        <li class="page-item ">
+                                                            <a class="page-link {{ $list->currentPage() == $i ? 'active' : '' }}"
+                                                                href="{{ $list->url($i) }}">{{ $i }}</a>
+                                                        </li>
+                                                    @endfor
+                                                </ul>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -264,25 +301,51 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
-        aria-hidden="true">
+    <div class="modal fade " id="deleteScholarModal" tabindex="-1" role="dialog"
+        aria-labelledby="deleteScholarModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Create Your Account Now</h4>
-                </div>
-                <form action="/" method="post" autocomplete="off">
+                <form id="deleteScholarForm" action="/org_scholars" method="post" autocomplete="off">
+                    @method('delete')
                     @csrf
                     <div class="modal-body">
-
+                        <h5>Are You Sure You Want To Delete This Record?</h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
                             style="color:white !important;">Close</button>
-                        <button type="submit" class="btn btn-warning" name="btnSignup" value="yes"
-                            style="color:white !important;">Proceed Creation</button>
+                        <button type="submit" class="btn btn-danger" name="btnDeleteScholar" value="yes"
+                            style="color:white !important;">Proceed Deletion</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="viewScholarDetailModal" tabindex="-1" role="dialog"
+        aria-labelledby="viewScholarDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Requirements</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-dark justify-content-start" id="updateText">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        style="color:white !important;">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -303,42 +366,44 @@
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
     <script>
-        function showPassEvent() {
-            let editPass = document.getElementById('editPass');
-            if (editPass.type === "password") {
-                editPass.type = "text";
-            } else {
-                editPass.type = "password";
-            }
+        function deleteScholar(id) {
+            let deleteScholarForm = document.getElementById('deleteScholarForm');
+            deleteScholarForm.action = `/org_scholars/${id}`;
+
+        }
+
+        function updateRequirements(req) {
+            let updateText = document.getElementById('updateText');
+            updateText.innerHTML = req;
         }
     </script>
-    @if (session()->pull('successLogin'))
+    @if (session()->pull('successDeleteScholarship'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Login Successfully',
+                    title: 'Successfully Deleted Scholarship Record',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successLogin') }}
+        {{ session()->forget('successDeleteScholarship') }}
     @endif
-    @if (session()->pull('errorUserCreate'))
+    @if (session()->pull('errorDeleteScholarship'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Sign Up, Please Try Again',
+                    title: 'Failed To Delete Scholarship, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorUserCreate') }}
+        {{ session()->forget('errorDeleteScholarship') }}
     @endif
 </body>
 
