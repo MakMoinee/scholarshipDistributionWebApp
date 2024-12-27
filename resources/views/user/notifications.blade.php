@@ -111,6 +111,13 @@
                                                                                 <img src="/read.svg" alt=""
                                                                                     srcset="">
                                                                             </button>
+                                                                            <button type="button" data-toggle="modal"
+                                                                                data-target="#viewMessageModal"
+                                                                                onclick="updateViewMsg('{{ $item->message }}')"
+                                                                                class="btn btn-success ml-2">
+                                                                                <img src="/view.svg" alt=""
+                                                                                    srcset="">
+                                                                            </button>
                                                                             <button type="submit"
                                                                                 class="btn btn-danger ml-2"
                                                                                 name="btnDeleteNotif" value="yes">
@@ -137,6 +144,15 @@
                                                                     <div class="row">
                                                                         <div
                                                                             class="col-lg-12 justify-content-center d-flex">
+
+                                                                            <button type="button"
+                                                                                class="btn btn-success ml-2"
+                                                                                data-toggle="modal"
+                                                                                onclick="updateViewMsg('{{ $item->message }}')"
+                                                                                data-target="#viewMessageModal">
+                                                                                <img src="/view.svg" alt=""
+                                                                                    srcset="">
+                                                                            </button>
                                                                             <button type="submit"
                                                                                 class="btn btn-danger ml-2"
                                                                                 name="btnDeleteNotif" value="yes">
@@ -247,7 +263,34 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-
+    <div class="modal fade " id="viewMessageModal" tabindex="-1" role="dialog"
+        aria-labelledby="viewMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>View Message</h4>
+                </div>
+                <form action="/" method="post" autocomplete="off">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="text-dark" id="viewMsgTxt"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="color:white !important;">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -271,6 +314,11 @@
             } else {
                 editPass.type = "password";
             }
+        }
+
+        function updateViewMsg(data) {
+            let viewMsgTxt = document.getElementById('viewMsgTxt');
+            viewMsgTxt.innerHTML = data;
         }
 
         function updateButton() {

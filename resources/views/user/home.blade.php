@@ -230,28 +230,7 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Create Your Account Now</h4>
-                </div>
-                <form action="/" method="post" autocomplete="off">
-                    @csrf
-                    <div class="modal-body">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="color:white !important;">Close</button>
-                        <button type="submit" class="btn btn-warning" name="btnSignup" value="yes"
-                            style="color:white !important;">Proceed Creation</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
 
 
     <!-- JavaScript Libraries -->

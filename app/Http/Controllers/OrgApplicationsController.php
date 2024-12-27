@@ -70,6 +70,26 @@ class OrgApplicationsController extends Controller
                     session()->put("errorAddRemarks", true);
                 }
             } else if ($request->btnApprove) {
+                $newRemarks = new ApplicationRemarks();
+                $newRemarks->studentID = $request->studentID;
+                $newRemarks->remarks = $request->remarks;
+                $isSave = $newRemarks->save();
+                if ($isSave) {
+                    $newNotif = new Notifications();
+                    $newNotif->userID = $request->studentID;
+                    $newNotif->message = $request->remarks;
+                    $newNotif->status = 'unread';
+                    $newNotif->save();
+
+                    $updateCount = DB::table('applications')->where('id', '=', $request->applicationID)->update(['status' => 'approved']);
+                    if ($updateCount > 0) {
+                        session()->put("successApproved", true);
+                    } else {
+                        session()->put("errorApproved", true);
+                    }
+                } else {
+                    session()->put("errorApproved", true);
+                }
             }
 
             return redirect("/org_applications");

@@ -151,8 +151,9 @@
                                 <div class="row mt-3">
                                     <div class="col-lg-12">
                                         <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
-                                        <textarea required name="remarks" id="" cols="30" rows="10" class="form-control"></textarea>
+                                        <textarea required name="remarks" id="remarks" cols="30" rows="10" class="form-control"></textarea>
                                         <input type="hidden" name="studentID" value="{{ $data['studentID'] }}">
+                                        <input type="hidden" name="applicationID" value="{{ $data['applicationID'] }}">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -160,7 +161,7 @@
                                         <button type="button" class="btn btn-secondary mr-2"
                                             onclick="window.close();">Close</button>
                                         <button type="submit" class="btn btn-primary me-2" name="btnApprove"
-                                            value="yes">Approve</button>
+                                            value="yes" onclick="updateRemarks();">Approve</button>
                                         <button type="submit" class="btn btn-success ml-2" name="btnUpdateAppl"
                                             value="yes">Update</button>
                                     </div>
@@ -333,6 +334,11 @@
         function updateRequirements(req) {
             let updateText = document.getElementById('updateText');
             updateText.innerHTML = req;
+        }
+
+        function updateRemarks(){
+            let remarks = document.getElementById('remarks');
+            remarks.innerHTML = "Your Application Is Approved, Please Check Transactions Page";
         }
     </script>
     @if (session()->pull('successDeleteScholarship'))

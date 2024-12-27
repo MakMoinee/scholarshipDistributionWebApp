@@ -382,6 +382,34 @@
             updateText.innerHTML = req;
         }
     </script>
+    @if (session()->pull('successApproved'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Successfully Approved Application',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('successApproved') }}
+    @endif
+    @if (session()->pull('errorApproved'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Failed To Approve Application, Please Try Again Later',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('errorApproved') }}
+    @endif
     @if (session()->pull('successAddRemarks'))
         <script>
             setTimeout(() => {
