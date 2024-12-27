@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrgApplicationsController;
 use App\Http\Controllers\OrgDetailsController;
 use App\Http\Controllers\OrgHomeController;
 use App\Http\Controllers\OrgScholarshipListController;
@@ -46,4 +47,5 @@ Route::resource("/org_home", OrgHomeController::class);
 Route::resource("/org_details", OrgDetailsController::class);
 Route::resource("/org_scholars", OrgScholarshipsController::class);
 Route::resource("/org_sch_list", OrgScholarshipListController::class);
+Route::resource("/org_applications", OrgApplicationsController::class);
 Route::get("/user_available_sch", [UserViewRequirementsController::class, 'index']);

@@ -93,7 +93,7 @@
                                                         <th>Scholarship Name</th>
                                                         <th class="text-center">Your Payment Address</th>
                                                         <th>Status</th>
-                                                        <th class="text-center">Created By</th>
+                                                        <th class="text-center">Created Date</th>
                                                         <th>Action</th>
                                                         <th class="text-center"></th>
                                                     </tr>
