@@ -382,6 +382,20 @@
             updateText.innerHTML = req;
         }
     </script>
+    @if (session()->pull('successAddRemarks'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Successfully Updated Application With Remarks',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('successAddRemarks') }}
+    @endif
     @if (session()->pull('successDeleteScholarship'))
         <script>
             setTimeout(() => {
@@ -396,19 +410,19 @@
         </script>
         {{ session()->forget('successDeleteScholarship') }}
     @endif
-    @if (session()->pull('errorDeleteScholarship'))
+    @if (session()->pull('errorAddRemarks'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Delete Scholarship, Please Try Again',
+                    title: 'Failed To Update Application With Remarks, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorDeleteScholarship') }}
+        {{ session()->forget('errorAddRemarks') }}
     @endif
 </body>
 

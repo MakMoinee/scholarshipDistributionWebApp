@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApplicationRemarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -43,7 +44,30 @@ class OrgApplicationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            if ($user['userType'] != "org") {
+                return redirect("/logout");
+            }
+
+            if ($request->btnUpdateAppl) {
+                $newRemarks = new ApplicationRemarks();
+                $newRemarks->studentID = $request->studentID;
+                $newRemarks->remarks = $request->remarks;
+                $isSave = $newRemarks->save();
+                if ($isSave) {
+                    session()->put("successAddRemarks", true);
+                } else {
+                    session()->put("errorAddRemarks", true);
+                }
+            } else if ($request->btnApprove) {
+            }
+
+            return redirect("/org_applications");
+        }
+        return redirect("/");
     }
 
     /**

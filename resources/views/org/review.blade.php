@@ -146,19 +146,27 @@
                                         type="application/pdf">
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-lg-12">
-                                    <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
-                                    <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
+                            <form action="/org_applications" method="post">
+                                @csrf
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
+                                        <textarea required name="remarks" id="" cols="30" rows="10" class="form-control"></textarea>
+                                        <input type="hidden" name="studentID" value="{{ $data['studentID'] }}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-lg-12 d-flex">
-                                    <button type="button" class="btn btn-secondary mr-2"
-                                        onclick="window.close();">Close</button>
-                                    <button type="submit" class="btn btn-primary me-2">Approve</button>
+                                <div class="row mt-3">
+                                    <div class="col-lg-12 d-flex">
+                                        <button type="button" class="btn btn-secondary mr-2"
+                                            onclick="window.close();">Close</button>
+                                        <button type="submit" class="btn btn-primary me-2" name="btnApprove"
+                                            value="yes">Approve</button>
+                                        <button type="submit" class="btn btn-success ml-2" name="btnUpdateAppl"
+                                            value="yes">Update</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
