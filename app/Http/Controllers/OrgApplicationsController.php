@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ApplicationRemarks;
 use App\Models\Notifications;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +81,12 @@ class OrgApplicationsController extends Controller
                     $newNotif->message = $request->remarks;
                     $newNotif->status = 'unread';
                     $newNotif->save();
+
+                    $newTrans = new Transactions();
+                    $newTrans->applicationID = $request->applicationID;
+                    $newTrans->status = "waiting for disbursement";
+                    $newTrans->save();
+
 
                     $updateCount = DB::table('applications')->where('id', '=', $request->applicationID)->update(['status' => 'approved']);
                     if ($updateCount > 0) {
