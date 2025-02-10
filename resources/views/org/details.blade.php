@@ -102,7 +102,7 @@
 
     <div class="container-fluid py-5">
         <div class="container">
-            <form action="/user_details" method="post" enctype="multipart/form-data">
+            <form action="/org_details" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-lg-12">
@@ -173,15 +173,6 @@
                                                 <label for="female" class="text-dark">Female</label>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-lg-4">
-                                        <label for="contactNumber" class="text-dark">Contact Number:<span
-                                                class="text-danger">*</span> </label>
-                                        <input required step="1" type="number" name="contactNumber"
-                                            id="" class="form-control"
-                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                     </div>
                                 </div>
 
@@ -331,33 +322,33 @@
             }
         }
     </script>
-    @if (session()->pull('successLogin'))
+    @if (session()->pull('successUpdateDetails'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Login Successfully',
+                    title: 'Successfully Updated Details',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successLogin') }}
+        {{ session()->forget('successUpdateDetails') }}
     @endif
-    @if (session()->pull('errorUserCreate'))
+    @if (session()->pull('errorUpdateDetails'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Sign Up, Please Try Again',
+                    title: 'Failed To Update Details, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorUserCreate') }}
+        {{ session()->forget('errorUpdateDetails') }}
     @endif
 </body>
 

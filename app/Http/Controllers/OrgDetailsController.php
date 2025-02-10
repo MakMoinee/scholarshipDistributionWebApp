@@ -43,7 +43,36 @@ class OrgDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->exists('users')) {
+            $user = session()->pull('users');
+            session()->put("users", $user);
+
+            if ($user['userType'] != "org") {
+                return redirect("/logout");
+            }
+
+            if ($request->btnSaveDetails) {
+                $updateCount = DB::table('users')->where("userID", '=', $user['userID'])->update([
+                    "birthDate" => $request->birthDate,
+                    "firstName" => $request->firstName,
+                    "middleName" => $request->middleName,
+                    "lastName" => $request->lastName,
+                    "address" => $request->address,
+                    "gender" => $request->gender,
+                ]);
+                if ($updateCount > 0) {
+                    $myDataArr = json_decode(DB::table('users')->where("userID", '=', $user['userID'])->get(), true);
+                    $user =  $myDataArr[0];
+                    session()->put("users", $user);
+
+                    session()->put("successUpdateDetails", true);
+                } else {
+                    session()->put("errorUpdateDetails", true);
+                }
+            }
+            return redirect("/org_details");
+        }
+        return redirect("/");
     }
 
     /**

@@ -202,7 +202,9 @@
                                                         <td class="text-center">
                                                             @if ($item->status == 'waiting for disbursement')
                                                                 <button
-                                                                    class="btn btn-warning justify-content-center d-flex">
+                                                                    class="btn btn-warning justify-content-center d-flex"
+                                                                    data-toggle="modal" data-target="#sendFundsModal"
+                                                                    onclick="disburseThis({{ $item->scholarshipAmount }},{{ $item->ownerID }},'{{ $item->studentPaymentAddress }}',{{ $item->id }},{{ $item->studentID }})">
                                                                     <img src="/disburse.svg" alt=""
                                                                         srcset="">
                                                                 </button>
@@ -342,6 +344,40 @@
         </div>
     </div>
 
+    <div class="modal fade" id="sendFundsModal" tabindex="-1" role="dialog" aria-labelledby="sendFundsModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sendFundsModalTitle">Disburse Funds</h5>
+                </div>
+                <form action="/org_transactions" method="post" onsubmit="return false;" id="disbursedForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <h4>Amount To Be Disbursed</h4>
+                            <br>
+                            <input class="form-control" type="text" name="" id="amountToBeDisbursed"
+                                disabled style="cursor: not-allowed" value="">
+                            <input type="hidden" name="eth" value="" id="disbursedETH">
+                            <input type="hidden" name="transID" value="" id="disbursedTransID">
+                            <input type="hidden" name="thash" value="" id="disbursedThash">
+                            <input type="hidden" name="amount" value="" id="disbursedAmount">
+                            <input type="hidden" name="studentID" value="" id="disbursedStudentID">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="btnCloseDisburse">Close</button>
+                        <button type="submit" class="btn btn-primary" name="btnDisburse" value="yes"
+                            style="display: none;" id="btnDisburse">Proceed</button>
+                        <button type="submit" class="btn btn-primary" onclick="validatePayment()">Proceed</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -366,8 +402,42 @@
         let contractAddress = `{{ $contractAddress }}`;
         let phpRate = "{{ $phpRate }}";
         let uid = "{{ $userID }}";
+        let ownerID;
+        let spa = "";
+        let sid;
+
+        function disburseThis(amount, id, pa, transID, ssid) {
+            let disbursedTransID = document.getElementById('disbursedTransID');
+            disbursedTransID.value = transID;
+            let amountToBeDisbursed = document.getElementById('amountToBeDisbursed');
+            amountToBeDisbursed.value = `${amount}`;
+            ownerID = id;
+            spa = pa;
+            tid = transID;
+            sid = ssid;
+        }
     </script>
     <script src="/js/cashin.js"></script>
+    <script src="/js/send.js"></script>
+    <script>
+        function validatePayment() {
+            let amountToBeDisbursed = document.getElementById('amountToBeDisbursed').value;
+            let myBalance = {{ $myBalance }};
+            if (myBalance < amountToBeDisbursed) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Insufficient Funds',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+                let btnCloseDisburse = document.getElementById('btnCloseDisburse');
+                btnCloseDisburse.click();
+            } else {
+                receiveFund(amountToBeDisbursed, ownerID, spa, "{{ $rpcURL }}");
+            }
+        }
+    </script>
     @if (session()->pull('successApproved'))
         <script>
             setTimeout(() => {
@@ -410,33 +480,33 @@
         </script>
         {{ session()->forget('successCashin') }}
     @endif
-    @if (session()->pull('successDeleteScholarship'))
+    @if (session()->pull('successDisbursed'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Successfully Deleted Scholarship Record',
+                    title: 'Successfully Disbursed Scholarship Funds',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successDeleteScholarship') }}
+        {{ session()->forget('successDisbursed') }}
     @endif
-    @if (session()->pull('errorAddRemarks'))
+    @if (session()->pull('errorDisbursed'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Update Application With Remarks, Please Try Again',
+                    title: 'Failed To Disbursed Scholarship Funds, Please Try Again',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorAddRemarks') }}
+        {{ session()->forget('errorDisbursed') }}
     @endif
 </body>
 

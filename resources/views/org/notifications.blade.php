@@ -149,15 +149,24 @@
                                                                                 <img src="/read.svg" alt=""
                                                                                     srcset="">
                                                                             </button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger ml-2"
-                                                                                name="btnDeleteNotif" value="yes">
-                                                                                <img src="/delete.svg" alt=""
+
+                                                                            <button type="button"
+                                                                                class="btn btn-success ml-2"
+                                                                                data-toggle="modal"
+                                                                                onclick="updateViewMsg('{{ $item->message }}')"
+                                                                                data-target="#viewMessageModal">
+                                                                                <img src="/view.svg" alt=""
                                                                                     srcset="">
-                                                                            </button>
-                                                                            <input type="hidden"
-                                                                                value="{{ $item->id }}"
-                                                                                name="notifID" class="invisible">
+                                                                                <button type="submit"
+                                                                                    class="btn btn-danger ml-2"
+                                                                                    name="btnDeleteNotif"
+                                                                                    value="yes">
+                                                                                    <img src="/delete.svg"
+                                                                                        alt="" srcset="">
+                                                                                </button>
+                                                                                <input type="hidden"
+                                                                                    value="{{ $item->id }}"
+                                                                                    name="notifID" class="invisible">
                                                                         </div>
                                                                     </div>
                                                                 </form>
@@ -175,15 +184,25 @@
                                                                     <div class="row">
                                                                         <div
                                                                             class="col-lg-12 justify-content-center d-flex">
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger ml-2"
-                                                                                name="btnDeleteNotif" value="yes">
-                                                                                <img src="/delete.svg" alt=""
+
+                                                                            <button type="button"
+                                                                                class="btn btn-success ml-2"
+                                                                                data-toggle="modal"
+                                                                                onclick="updateViewMsg('{{ $item->message }}')"
+                                                                                data-target="#viewMessageModal">
+                                                                                <img src="/view.svg" alt=""
                                                                                     srcset="">
-                                                                            </button>
-                                                                            <input type="hidden"
-                                                                                value="{{ $item->id }}"
-                                                                                name="notifID" class="invisible">
+
+                                                                                <button type="submit"
+                                                                                    class="btn btn-danger ml-2"
+                                                                                    name="btnDeleteNotif"
+                                                                                    value="yes">
+                                                                                    <img src="/delete.svg"
+                                                                                        alt="" srcset="">
+                                                                                </button>
+                                                                                <input type="hidden"
+                                                                                    value="{{ $item->id }}"
+                                                                                    name="notifID" class="invisible">
                                                                         </div>
                                                                     </div>
                                                                 </form>
@@ -285,23 +304,29 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade " id="viewMessageModal" tabindex="-1" role="dialog"
+        aria-labelledby="viewMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Create Your Account Now</h4>
+                    <h4>View Message</h4>
                 </div>
                 <form action="/" method="post" autocomplete="off">
                     @csrf
                     <div class="modal-body">
-
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="text-dark" id="viewMsgTxt"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
                             style="color:white !important;">Close</button>
-                        <button type="submit" class="btn btn-warning" name="btnSignup" value="yes"
-                            style="color:white !important;">Proceed Creation</button>
                     </div>
                 </form>
             </div>
@@ -331,6 +356,11 @@
             } else {
                 editPass.type = "password";
             }
+        }
+
+        function updateViewMsg(data) {
+            let viewMsgTxt = document.getElementById('viewMsgTxt');
+            viewMsgTxt.innerHTML = data;
         }
     </script>
     @if (session()->pull('successDelete'))

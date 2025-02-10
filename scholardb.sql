@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 28/12/2024 01:24:07
+ Date: 10/02/2025 10:28:52
 */
 
 SET NAMES utf8mb4;
@@ -58,6 +58,42 @@ CREATE TABLE `applications`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for balances
+-- ----------------------------
+DROP TABLE IF EXISTS `balances`;
+CREATE TABLE `balances`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `amount` decimal(10, 4) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of balances
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for cashins
+-- ----------------------------
+DROP TABLE IF EXISTS `cashins`;
+CREATE TABLE `cashins`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `amount` decimal(10, 2) NOT NULL,
+  `ethAmount` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transactionHash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cashins
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for migrations
 -- ----------------------------
 DROP TABLE IF EXISTS `migrations`;
@@ -66,7 +102,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
@@ -78,6 +114,9 @@ INSERT INTO `migrations` VALUES (4, '2024_12_27_070309_create_scholarships_table
 INSERT INTO `migrations` VALUES (5, '2024_12_27_090047_create_applications_table', 1);
 INSERT INTO `migrations` VALUES (6, '2024_12_27_145112_create_application_remarks_table', 1);
 INSERT INTO `migrations` VALUES (7, '2024_12_27_153441_create_notifications_table', 1);
+INSERT INTO `migrations` VALUES (8, '2025_02_09_175657_create_transactions_table', 1);
+INSERT INTO `migrations` VALUES (9, '2025_02_09_195525_create_cashins_table', 1);
+INSERT INTO `migrations` VALUES (10, '2025_02_09_200119_create_balances_table', 1);
 
 -- ----------------------------
 -- Table structure for notifications
@@ -184,6 +223,25 @@ CREATE TABLE `students`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for transactions
+-- ----------------------------
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE `transactions`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `applicationID` int NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amountReceived` decimal(10, 2) NULL DEFAULT NULL,
+  `transactionHash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of transactions
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -213,5 +271,11 @@ CREATE TABLE `users`  (
 -- ----------------------------
 DROP VIEW IF EXISTS `vwapplications`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vwapplications` AS select `scholarships`.`id` AS `id`,`scholarships`.`userID` AS `userID`,`scholarships`.`orgName` AS `orgName`,`scholarships`.`scholarshipName` AS `scholarshipName`,`scholarships`.`requirements` AS `requirements`,`scholarships`.`status` AS `status`,`scholarships`.`created_at` AS `created_at`,`scholarships`.`updated_at` AS `updated_at`,`applications`.`id` AS `applicationID`,`applications`.`scholarshipID` AS `scholarshipID`,`applications`.`requirementFile` AS `requirementFile`,`applications`.`requirementFile2` AS `requirementFile2`,`applications`.`requirementFile3` AS `requirementFile3`,`applications`.`requirementFile4` AS `requirementFile4`,`applications`.`paymentAddress` AS `paymentAddress`,`applications`.`status` AS `applicationStatus`,`applications`.`created_at` AS `applicationCreateDate`,`users`.`firstName` AS `firstName`,`users`.`middleName` AS `middleName`,`users`.`lastName` AS `lastName`,`users`.`userID` AS `studentID` from ((`users` join `scholarships`) join `applications` on(((`scholarships`.`id` = `applications`.`scholarshipID`) and (`users`.`userID` = `applications`.`userID`))));
+
+-- ----------------------------
+-- View structure for vwtransactions
+-- ----------------------------
+DROP VIEW IF EXISTS `vwtransactions`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vwtransactions` AS select distinct `transactions`.`id` AS `id`,`transactions`.`applicationID` AS `applicationID`,`transactions`.`status` AS `status`,`transactions`.`amountReceived` AS `amountReceived`,`transactions`.`transactionHash` AS `transactionHash`,`transactions`.`created_at` AS `created_at`,`transactions`.`updated_at` AS `updated_at`,`scholarships`.`id` AS `scholarshipID`,`scholarships`.`scholarshipName` AS `scholarshipName`,`applications`.`userID` AS `studentID`,`applications`.`paymentAddress` AS `studentPaymentAddress`,`scholarships`.`userID` AS `ownerID`,`users`.`firstName` AS `firstName`,`users`.`middleName` AS `middleName`,`users`.`lastName` AS `lastName`,`scholarships`.`orgName` AS `orgName`,`scholarships`.`scholarshipAmount` AS `scholarshipAmount` from (((`applications` join `transactions` on((`applications`.`id` = `transactions`.`applicationID`))) join `scholarships` on((`applications`.`scholarshipID` = `scholarships`.`id`))) join `users` on((`applications`.`userID` = `users`.`userID`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -171,12 +171,15 @@
                                                             {{ (new DateTime($item->applicationCreateDate))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
                                                         </td>
                                                         <td class="text-center">
-                                                            <button
-                                                                onclick="window.open('/org_review_appl?id={{ $item->applicationID }}')"
-                                                                title="Review"
-                                                                class="btn btn-primary justify-content-center d-flex">
-                                                                <img src="/review.svg" alt="" srcset="">
-                                                            </button>
+                                                            @if ($item->applicationStatus != 'approved')
+                                                                <button
+                                                                    onclick="window.open('/org_review_appl?id={{ $item->applicationID }}')"
+                                                                    title="Review"
+                                                                    class="btn btn-primary justify-content-center d-flex">
+                                                                    <img src="/review.svg" alt=""
+                                                                        srcset="">
+                                                                </button>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

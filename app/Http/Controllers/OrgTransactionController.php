@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balance;
 use App\Models\Cashins;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -28,9 +30,18 @@ class OrgTransactionController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
+            $checkBalance = DB::table('balances')->where('userID', '=', $user['userID'])->count();
+            if ($checkBalance == 0) {
+                $newBalance = new Balance();
+                $newBalance->userID = $user['userID'];
+                $newBalance->amount = 0;
+                $newBalance->save();
+            }
+
             $phpRate = $this->getEthToPhpRate();
             $contractABI = config('contract.abi');
             $contractAddress = env('CONTRACT_ADDRESS');
+            $rpcURL = env('LOCAL_RPC');
             $myBalanceArr = json_decode(DB::table('balances')->where('userID', '=', $user['userID'])->get(), true);
             $myBalance = $myBalanceArr[0]['amount'];
             return view('org.transactions', [
@@ -40,7 +51,8 @@ class OrgTransactionController extends Controller
                 'contractABI' => $contractABI,
                 'contractAddress' => $contractAddress,
                 'userID' => $user['userID'],
-                'myBalance' => $myBalance
+                'myBalance' => $myBalance,
+                'rpcURL' => $rpcURL
             ]);
         }
         return redirect("/");
@@ -81,9 +93,43 @@ class OrgTransactionController extends Controller
                     'amount' => $myBalance,
                 ]);
                 if ($isSave) {
+                    $newNotif = new Notifications();
+                    $newNotif->userID = $user['userID'];
+                    $newNotif->message = "You have Successfully Cashin Amount Of " . $request->amount;
+                    $newNotif->status = 'unread';
+                    $newNotif->save();
                     session()->put("successCashin", true);
                 } else {
                     session()->put("errorCashin", true);
+                }
+            } else if ($request->btnDisburse) {
+                $myBalanceArr = json_decode(DB::table('balances')->where('userID', '=', $user['userID'])->get(), true);
+                $myBalance = $myBalanceArr[0]['amount'];
+                $myBalance = $myBalance - $request->amount;
+                DB::table('balances')->where('id', '=', $myBalanceArr[0]['id'])->update([
+                    'amount' => $myBalance,
+                ]);
+
+                $updateCount = DB::table('transactions')->where('id', '=', $request->transID)->update([
+                    "transactionHash" => $request->thash,
+                    "amountReceived" => $request->amount,
+                    "status" => "disbursed"
+                ]);
+                if ($updateCount > 0) {
+                    $newNotif = new Notifications();
+                    $newNotif->userID = $user['userID'];
+                    $newNotif->message = "You have Successfully Disbursed Fund Amounting To P" . $request->amount;
+                    $newNotif->status = 'unread';
+                    $newNotif->save();
+
+                    $newNotif = new Notifications();
+                    $newNotif->userID = $request->studentID;
+                    $newNotif->message = "Your Scholarship Funds Amounting To P" . number_format($request->amount, 4) . " has been successfully disbursed to your designated payment address";
+                    $newNotif->status = 'unread';
+                    $newNotif->save();
+                    session()->put("successDisbursed", true);
+                } else {
+                    session()->put("errorDisbursed", true);
                 }
             }
             return redirect("/org_transactions");
