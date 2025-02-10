@@ -73,6 +73,8 @@
                                 <h2>Personal Information</h2>
                                 <div class="row">
                                     <div class="col-lg-5 mx-auto bg-grey" style="height: 250px;">
+                                        <img class="mx-auto" src="" id="imgProfile" height="250px"
+                                            alt="" srcset="">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -81,7 +83,7 @@
                                             onclick="document.getElementById('profile').click();">Upload Profile
                                             Picture</button>
                                         <input type="file" style="display: none;" name="profile" id="profile"
-                                            accept=".jpg,.png,.jpeg">
+                                            accept=".jpg,.png,.jpeg" onchange="previewImage(event)">
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -288,7 +290,8 @@
                                             onclick="document.getElementById('grade').click();" type="button">Upload
                                             Report Card
                                             or Proof of Grade</button>
-                                        <input type="file" style="display: none;" name="grade" id="grade">
+                                        <input type="file" style="display: none;" name="grade" id="grade"
+                                            accept="*.jpg, *.png, *.jpeg">
                                     </div>
                                 </div>
                                 <br>
@@ -436,34 +439,78 @@
                 editPass.type = "password";
             }
         }
+
+        function previewImage(event) {
+            var files = event.currentTarget.files;
+            if (files && files[0]) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('imgProfile');
+                    if (output) {
+                        output.src = reader.result;
+                    }
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        }
     </script>
-    @if (session()->pull('successLogin'))
+    @if (session()->pull('successUpdateDetails'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Login Successfully',
+                    title: 'Successfully Updated Details',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successLogin') }}
+        {{ session()->forget('successUpdateDetails') }}
     @endif
-    @if (session()->pull('errorUserCreate'))
+    @if (session()->pull('errorUpdateDetails'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Sign Up, Please Try Again',
+                    title: 'Failed To Update Details, Please Try Again Later',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorUserCreate') }}
+        {{ session()->forget('errorUpdateDetails') }}
+    @endif
+
+    @if (session()->pull('invalidProfile'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Invalid File Uploaded For Profile, Please Try Again Later',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('invalidProfile') }}
+    @endif
+
+    @if (session()->pull('invalidGrade'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Invalid File Uploaded For Grade, Please Try Again Later',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('invalidGrade') }}
     @endif
 </body>
 
