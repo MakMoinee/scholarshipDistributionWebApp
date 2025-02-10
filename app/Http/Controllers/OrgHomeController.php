@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,13 @@ class OrgHomeController extends Controller
 
             if ($user['userType'] != "org") {
                 return redirect("/logout");
+            }
+            $checkBalance = DB::table('balances')->where('userID', '=', $user['userID'])->count();
+            if ($checkBalance == 0) {
+                $newBalance = new Balance();
+                $newBalance->userID = $user['userID'];
+                $newBalance->amount = 0;
+                $newBalance->save();
             }
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 

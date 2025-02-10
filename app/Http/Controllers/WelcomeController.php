@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balance;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +59,7 @@ class WelcomeController extends Controller
                 $newUser->password = Hash::make($request->password);
                 $newUser->userType = $request->userType;
                 if ($request->userType == "org") {
-                    $newUser->status = "unapproved";
+                    $newUser->status = "active";
                 } else if ($request->userType == "user") {
                     $newUser->status = "active";
                 }

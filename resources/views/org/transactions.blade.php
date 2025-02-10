@@ -117,8 +117,8 @@
                                 <div class="col-lg-12">
                                     <h4>Wallet Balance</h4>
                                     <br>
-                                    <h5>P0.0</h5>
-                                    <button class="btn btn-primary mt-2">
+                                    <h5>P{{ number_format($myBalance, 2) }}</h5>
+                                    <button class="btn btn-primary mt-2" data-target="#cashinModal" data-toggle="modal">
                                         Cash In
                                     </button>
                                 </div>
@@ -304,82 +304,40 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <div class="modal fade " id="reviewScholarModal" tabindex="-1" role="dialog"
-        aria-labelledby="reviewScholarModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="cashinModal" tabindex="-1" role="dialog" aria-labelledby="cashinModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>Review Applicant</h3>
+                    <h5 class="modal-title" id="cashinModalTitle">Cashin</h5>
                 </div>
-                <form id="reviewScholarForm" action="/org_applications" method="post" autocomplete="off">
+                <form action="/org_transactions" method="post" onsubmit="return false;" id="cashinForm">
                     @csrf
                     <div class="modal-body">
-                        <div class="row mt-2">
-                            <div class="col-lg-4">
-                                <label for="firstName" class="text-dark">Student Name:</label>
-                                <p class="text-dark" id="studentFN"></p>
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="studentInfo" class="text-dark">Student Information:</label>
-                                <button class="btn btn-success justify-content-center d-flex">
-                                    View Full Info
-                                </button>
-                            </div>
-                            <div class="col-lg-4"></div>
+                        <div class="form-group">
+                            <label for="amount" class="text-dark">Amount (In PHP)</label>
+                            <br>
+                            <input min="100" required type="number" name="amount" id="cashinAmount"
+                                class="form-control">
+                            <input type="hidden" name="thash" value="" id="thash">
+                            <input type="hidden" name="tfrom" value="" id="tfrom">
+                            <input type="hidden" name="tto" value="" id="tto">
+                            <input type="hidden" name="eth" value="" id="eth">
+                            <input type="hidden" name="transID" value="" id="transID">
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-12">
-                                <h6>Attachments</h6>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <embed style="height: 600px;" class="embed-responsive mt-2" id="pdfViewer"
-                                    src="sample.pdf" type="application/pdf">
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-lg-12">
-                                <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
-                                <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                            </div>
+                        <br>
+                        <div class="form-group">
+                            <h6> <b>Note:</b> {{ 100 / $phpRate }} ETH = P100 </h6>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="color:white !important;">Close</button>
-                        <button type="submit" class="btn btn-danger" name="btnDeleteScholar" value="yes"
-                            style="color:white !important;">Approved</button>
+                            id="donationClose">Close</button>
+                        <button type="submit" class="btn btn-primary" name="btnAddCash" value="yes"
+                            style="display: none;" id="btnAddCash">Proceed</button>
+                        <button type="submit" class="btn btn-primary" onclick="validateCashin()">Proceed</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade " id="viewScholarDetailModal" tabindex="-1" role="dialog"
-        aria-labelledby="viewScholarDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Requirements</h4>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-dark justify-content-start" id="updateText">
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                        style="color:white !important;">Close</button>
-                </div>
             </div>
         </div>
     </div>
@@ -399,20 +357,17 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"
+        integrity="sha512-V3xRGsQMQ8CG4l2gVN44TCDmNY5cdlxbSvejrgmWxcLKHft0Q3XQDbeuJ9aot14mpNuRWGtI//WKraedDGNZ+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
-        function reviewApplicant(name, pdf) {
-            let studentFN = document.getElementById('studentFN');
-            studentFN.innerHTML = name;
-            let pdfViewer = document.getElementById('pdfViewer');
-            pdfViewer.src = `/storage/applications/${pdf}`;
-
-        }
-
-        function updateRequirements(req) {
-            let updateText = document.getElementById('updateText');
-            updateText.innerHTML = req;
-        }
+        let contractABI = @json($contractABI);
+        let contractAddress = `{{ $contractAddress }}`;
+        let phpRate = "{{ $phpRate }}";
+        let uid = "{{ $userID }}";
     </script>
+    <script src="/js/cashin.js"></script>
     @if (session()->pull('successApproved'))
         <script>
             setTimeout(() => {
@@ -427,33 +382,33 @@
         </script>
         {{ session()->forget('successApproved') }}
     @endif
-    @if (session()->pull('errorApproved'))
+    @if (session()->pull('errorCashin'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Failed To Approve Application, Please Try Again Later',
+                    title: 'Failed To Cashin Amount, Please Try Again Later',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('errorApproved') }}
+        {{ session()->forget('errorCashin') }}
     @endif
-    @if (session()->pull('successAddRemarks'))
+    @if (session()->pull('successCashin'))
         <script>
             setTimeout(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Successfully Updated Application With Remarks',
+                    title: 'Cashin Successfully',
                     showConfirmButton: false,
                     timer: 800
                 });
             }, 500);
         </script>
-        {{ session()->forget('successAddRemarks') }}
+        {{ session()->forget('successCashin') }}
     @endif
     @if (session()->pull('successDeleteScholarship'))
         <script>
