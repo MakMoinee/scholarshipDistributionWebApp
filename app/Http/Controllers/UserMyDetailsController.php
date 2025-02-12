@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Students;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class UserMyDetailsController extends Controller
@@ -24,7 +25,13 @@ class UserMyDetailsController extends Controller
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
             $mDate =  date('Y-m-d', strtotime('-14 years'));
-            return view('user.mydetails', ['user' => $user, 'maxDate' => $mDate, 'notifCount' => $notifCount]);
+            $student = json_decode(DB::table('students')->where('userID', "=", $user['userID'])->get(), true);
+            if (count($student) > 0) {
+                $student = $student[0];
+            } else {
+                $student = array();
+            }
+            return view('user.mydetails', ['student' => $student, 'user' => $user, 'maxDate' => $mDate, 'notifCount' => $notifCount]);
         }
         return redirect("/");
     }

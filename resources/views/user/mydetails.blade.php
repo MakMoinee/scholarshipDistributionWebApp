@@ -73,8 +73,14 @@
                                 <h2>Personal Information</h2>
                                 <div class="row">
                                     <div class="col-lg-5 mx-auto bg-grey" style="height: 250px;">
-                                        <img class="mx-auto" src="" id="imgProfile" height="250px"
-                                            alt="" srcset="">
+
+                                        @if ($student)
+                                            <img height="250px" src="/profiles/{{ $student['profile'] }}" alt=""
+                                                srcset="">
+                                        @else
+                                            <img class="mx-auto" src="" id="imgProfile" height="250px"
+                                                alt="" srcset="">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -84,6 +90,7 @@
                                             Picture</button>
                                         <input type="file" style="display: none;" name="profile" id="profile"
                                             accept=".jpg,.png,.jpeg" onchange="previewImage(event)">
+
                                     </div>
                                 </div>
                                 <div class="row mt-4">
