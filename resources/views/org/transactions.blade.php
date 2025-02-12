@@ -134,7 +134,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h3>Transactions</h3>
+                                    <h3 style="float: left">Transactions</h3>
+                                    <button style="float: right" class="btn btn-primary"
+                                        onclick="window.open('https\:\/\/sepolia.etherscan.io/address/0xAD3F2e8F08d00825b367514A28744BbE2e5e46e4')">Ledger</button>
                                 </div>
                             </div>
                             <div class="row mb-2">

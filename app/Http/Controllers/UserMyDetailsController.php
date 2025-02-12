@@ -92,34 +92,35 @@ class UserMyDetailsController extends Controller
                 if ($count > 0) {
 
                     $updateCount = DB::table('students')
-                        ->where('userID', $user['userID'])
+                        ->where('user_id', $user['userID'])
                         ->update([
-                            'firstName' => $request->firstName,
-                            'middleName' => $request->middleName,
-                            'lastName' => $request->lastName,
+                            'first_name' => $request->firstName,
+                            'middle_name' => $request->middleName,
+                            'last_name' => $request->lastName,
                             'address' => $request->address,
-                            'birthDate' => $request->birthDate,
+                            'birth_date' => $request->birthDate,
                             'gender' => $request->gender,
-                            'contactNumber' => $request->contactNumber,
+                            'contact_number' => $request->contactNumber,
                             'school' => $request->school,
-                            'schoolDate' => $request->schoolDate,
-                            'fatherFirstName' => $request->fatherFirstName,
-                            'fatherMiddleName' => $request->fatherMiddleName,
-                            'fatherLastName' => $request->fatherLastName,
-                            'fatherBirthDate' => $request->fatherBirthDate,
-                            'fatherOccupation' => $request->fatherOccupation,
-                            'fatherContactNumber' => $request->fatherContactNumber,
-                            'motherFirstName' => $request->motherFirstName,
-                            'motherMiddleName' => $request->motherMiddleName,
-                            'motherLastName' => $request->motherLastName,
-                            'motherBirthDate' => $request->motherBirthDate,
-                            'motherOccupation' => $request->motherOccupation,
-                            'motherContactNumber' => $request->motherContactNumber,
-                            'monthlyGross' => $request->monthlyGross,
-                            'monthlyNet' => $request->monthlyNet,
+                            'school_date' => $request->schoolDate,
+                            'father_first_name' => $request->fatherFirstName,
+                            'father_middle_name' => $request->fatherMiddleName,
+                            'father_last_name' => $request->fatherLastName,
+                            'father_birth_date' => $request->fatherBirthDate,
+                            'father_occupation' => $request->fatherOccupation,
+                            'father_contact_number' => $request->fatherContactNumber,
+                            'mother_first_name' => $request->motherFirstName,
+                            'mother_middle_name' => $request->motherMiddleName,
+                            'mother_last_name' => $request->motherLastName,
+                            'mother_birth_date' => $request->motherBirthDate,
+                            'mother_occupation' => $request->motherOccupation,
+                            'mother_contact_number' => $request->motherContactNumber,
+                            'monthly_gross' => $request->monthlyGross,
+                            'monthly_net' => $request->monthlyNet,
                             'profile' => $profileFileName,
                             'grade' => $gradeFileName,
                         ]);
+
                     if ($updateCount > 0) {
                         session()->put("successUpdateDetails", true);
                     } else {
@@ -127,30 +128,30 @@ class UserMyDetailsController extends Controller
                     }
                 } else {
                     $newStudent = new Students();
-                    $newStudent->userID = $user['userID'];
-                    $newStudent->firstName = $request->firstName;
-                    $newStudent->middleName = $request->middleName;
-                    $newStudent->lastName = $request->lastName;
+                    $newStudent->user_id = $user['userID'];
+                    $newStudent->first_name = $request->first_name;
+                    $newStudent->middle_name = $request->middle_name;
+                    $newStudent->last_name = $request->last_name;
                     $newStudent->address = $request->address;
-                    $newStudent->birthDate = $request->birthDate;
+                    $newStudent->birth_date = $request->birth_date;
                     $newStudent->gender = $request->gender;
-                    $newStudent->contactNumber = $request->contactNumber;
+                    $newStudent->contact_number = $request->contact_number;
                     $newStudent->school = $request->school;
-                    $newStudent->schoolDate = $request->schoolDate;
-                    $newStudent->fatherFirstName = $request->fatherFirstName;
-                    $newStudent->fatherMiddleName = $request->fatherMiddleName;
-                    $newStudent->fatherLastName = $request->fatherLastName;
-                    $newStudent->fatherBirthDate = $request->fatherBirthDate;
-                    $newStudent->fatherOccupation = $request->fatherOccupation;
-                    $newStudent->fatherContactNumber = $request->fatherContactNumber;
-                    $newStudent->motherFirstName = $request->motherFirstName;
-                    $newStudent->motherMiddleName = $request->motherMiddleName;
-                    $newStudent->motherLastName = $request->motherLastName;
-                    $newStudent->motherBirthDate = $request->motherBirthDate;
-                    $newStudent->motherOccupation = $request->motherOccupation;
-                    $newStudent->motherContactNumber = $request->motherContactNumber;
-                    $newStudent->monthlyGross = $request->monthlyGross;
-                    $newStudent->monthlyNet = $request->monthlyNet;
+                    $newStudent->school_date = $request->school_date;
+                    $newStudent->father_first_name = $request->father_first_name;
+                    $newStudent->father_middle_name = $request->father_middle_name;
+                    $newStudent->father_last_name = $request->father_last_name;
+                    $newStudent->father_birth_date = $request->father_birth_date;
+                    $newStudent->father_occupation = $request->father_occupation;
+                    $newStudent->father_contact_number = $request->father_contact_number;
+                    $newStudent->mother_first_name = $request->mother_first_name;
+                    $newStudent->mother_middle_name = $request->mother_middle_name;
+                    $newStudent->mother_last_name = $request->mother_last_name;
+                    $newStudent->mother_birth_date = $request->mother_birth_date;
+                    $newStudent->mother_occupation = $request->mother_occupation;
+                    $newStudent->mother_contact_number = $request->mother_contact_number;
+                    $newStudent->monthly_gross = $request->monthly_gross;
+                    $newStudent->monthly_net = $request->monthly_net;
                     $newStudent->profile = $profileFileName;
                     $newStudent->grade = $gradeFileName;
                     $isSave =  $newStudent->save();
