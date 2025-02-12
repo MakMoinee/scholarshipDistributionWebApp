@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 10/02/2025 10:28:52
+ Date: 13/02/2025 01:05:44
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `application_remarks`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of application_remarks
@@ -51,11 +51,12 @@ CREATE TABLE `applications`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of applications
 -- ----------------------------
+INSERT INTO `applications` VALUES (1, 1, 2, '1739332122.pdf', NULL, NULL, NULL, '0x2deA5F19BE50Faf7A20474F1cb1675Cc7c899FD6', 'active', '2025-02-12 03:48:42', '2025-02-12 03:48:42');
 
 -- ----------------------------
 -- Table structure for balances
@@ -68,11 +69,12 @@ CREATE TABLE `balances`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of balances
 -- ----------------------------
+INSERT INTO `balances` VALUES (1, 2, 750.0000, '2025-02-12 09:20:44', '2025-02-12 09:20:44');
 
 -- ----------------------------
 -- Table structure for cashins
@@ -87,11 +89,12 @@ CREATE TABLE `cashins`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cashins
 -- ----------------------------
+INSERT INTO `cashins` VALUES (1, 2, 1000.00, '0.0065599', '0xf199d6c18abf37fde5c69b5e4b084939caa8b6e6066735284e986dcae8579a62', '2025-02-12 09:29:19', '2025-02-12 09:29:19');
 
 -- ----------------------------
 -- Table structure for migrations
@@ -130,7 +133,7 @@ CREATE TABLE `notifications`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notifications
@@ -175,11 +178,12 @@ CREATE TABLE `scholarships`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scholarships
 -- ----------------------------
+INSERT INTO `scholarships` VALUES (2, 2, 'CHED', 'FINANCIAL ASSISTANCE', 250.0000, 'Birth Certificate, Proof Of Billing (With Your Address Indicated)', 'active', '2025-02-12 03:48:02', '2025-02-12 03:48:02');
 
 -- ----------------------------
 -- Table structure for students
@@ -216,11 +220,12 @@ CREATE TABLE `students`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of students
 -- ----------------------------
+INSERT INTO `students` VALUES (1, 1, '1739357049.png', 'sample', 'sample', 'sample', '0xc842251Cf2922425699F35500F736af81e96B463', '1998-10-13', 'male', '090945454', 'ACLC', '2025-02-12', 'asdasd', 'asdasda', 'asdasd', '2025-02-12', 'asdasd', '123123123', 'asdasd', 'asdasd', 'asdasd', '2025-02-12', 'asdasdasd', '123123', 123123.0000, 123123.0000, '1739357049.png', '2025-02-12 10:44:09', '2025-02-12 10:44:09');
 
 -- ----------------------------
 -- Table structure for transactions
@@ -235,7 +240,7 @@ CREATE TABLE `transactions`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of transactions
@@ -260,17 +265,19 @@ CREATE TABLE `users`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`userID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES (1, 'sample', 'sample', 'sample', '0xc842251Cf2922425699F35500F736af81e96B463', '1998-10-13', 'male', 'sample@gmail.com', '$2y$12$eyA3MtMQkmIQclw4Cgql8u.6rUPfNFZ6mrBe6dPK59QX7ZRbikTFm', 'user', 'active', '2025-02-10 02:30:19', '2025-02-10 02:30:19');
+INSERT INTO `users` VALUES (2, 'org', 'org', 'org', 'none', '1998-06-09', 'male', 'org@gmail.com', '$2y$12$wW0gwzrThgGYME7gbCKHeevzoEwGPu17YV0k5bNKZUhBNn1zigfm2', 'org', 'active', '2025-02-10 02:31:04', '2025-02-10 02:31:04');
 
 -- ----------------------------
 -- View structure for vwapplications
 -- ----------------------------
 DROP VIEW IF EXISTS `vwapplications`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vwapplications` AS select `scholarships`.`id` AS `id`,`scholarships`.`userID` AS `userID`,`scholarships`.`orgName` AS `orgName`,`scholarships`.`scholarshipName` AS `scholarshipName`,`scholarships`.`requirements` AS `requirements`,`scholarships`.`status` AS `status`,`scholarships`.`created_at` AS `created_at`,`scholarships`.`updated_at` AS `updated_at`,`applications`.`id` AS `applicationID`,`applications`.`scholarshipID` AS `scholarshipID`,`applications`.`requirementFile` AS `requirementFile`,`applications`.`requirementFile2` AS `requirementFile2`,`applications`.`requirementFile3` AS `requirementFile3`,`applications`.`requirementFile4` AS `requirementFile4`,`applications`.`paymentAddress` AS `paymentAddress`,`applications`.`status` AS `applicationStatus`,`applications`.`created_at` AS `applicationCreateDate`,`users`.`firstName` AS `firstName`,`users`.`middleName` AS `middleName`,`users`.`lastName` AS `lastName`,`users`.`userID` AS `studentID` from ((`users` join `scholarships`) join `applications` on(((`scholarships`.`id` = `applications`.`scholarshipID`) and (`users`.`userID` = `applications`.`userID`))));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vwapplications` AS select `scholarships`.`id` AS `id`,`scholarships`.`userID` AS `userID`,`scholarships`.`orgName` AS `orgName`,`scholarships`.`scholarshipName` AS `scholarshipName`,`scholarships`.`requirements` AS `requirements`,`scholarships`.`status` AS `status`,`scholarships`.`created_at` AS `created_at`,`scholarships`.`updated_at` AS `updated_at`,`applications`.`id` AS `applicationID`,`applications`.`scholarshipID` AS `scholarshipID`,`applications`.`requirementFile` AS `requirementFile`,`applications`.`requirementFile2` AS `requirementFile2`,`applications`.`requirementFile3` AS `requirementFile3`,`applications`.`requirementFile4` AS `requirementFile4`,`applications`.`paymentAddress` AS `paymentAddress`,`applications`.`status` AS `applicationStatus`,`applications`.`created_at` AS `applicationCreateDate`,`users`.`firstName` AS `firstName`,`users`.`middleName` AS `middleName`,`users`.`lastName` AS `lastName`,`users`.`userID` AS `studentID`,`scholarships`.`scholarshipAmount` AS `scholarshipAmount` from ((`users` join `scholarships`) join `applications` on(((`scholarships`.`id` = `applications`.`scholarshipID`) and (`users`.`userID` = `applications`.`userID`))));
 
 -- ----------------------------
 -- View structure for vwtransactions
