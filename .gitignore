@@ -17,5 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-public/grades
-public/profiles
+public/storage/grades
+public/storage/profiles
