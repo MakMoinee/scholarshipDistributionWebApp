@@ -24,7 +24,9 @@ class UserTransactionController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
-            return view('user.transactions', ['notifCount' => $notifCount, 'transactions' => $transactions]);
+
+            $contractAddress = env('CONTRACT_ADDRESS');
+            return view('user.transactions', ['contractAddress' => $contractAddress, 'notifCount' => $notifCount, 'transactions' => $transactions]);
         }
         return redirect("/");
     }

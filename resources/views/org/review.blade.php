@@ -146,22 +146,36 @@
                                         type="application/pdf">
                                 </div>
                             </div>
-                            <form action="/org_applications" method="post">
+                            <form action="/org_applications" method="post" onsubmit="return false;" id="orgForm">
                                 @csrf
                                 <div class="row mt-3">
                                     <div class="col-lg-12">
                                         <label for="remarks">Remarks:<span class="text-danger">*</span> </label>
                                         <textarea required name="remarks" id="remarks" cols="30" rows="10" class="form-control"></textarea>
-                                        <input type="hidden" name="studentID" value="{{ $data['studentID'] }}">
-                                        <input type="hidden" name="applicationID" value="{{ $data['applicationID'] }}">
+                                        <input type="hidden" name="studentID" value="{{ $data['studentID'] }}"
+                                            id="disbursedStudentID">
+                                        <input type="hidden" name="applicationID"
+                                            value="{{ $data['applicationID'] }}">
+                                        <input type="hidden" name="" id="amountToBeDisbursed" disabled
+                                            style="cursor: not-allowed" value="">
+                                        <input type="hidden" name="eth" value="" id="disbursedETH">
+                                        <input type="hidden" name="transID" value="" id="disbursedTransID">
+                                        <input type="hidden" name="thash" value="" id="disbursedThash">
+                                        <input type="hidden" name="amount" value="" id="disbursedAmount">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-lg-12 d-flex">
                                         <button type="button" class="btn btn-secondary mr-2"
                                             onclick="window.close();">Close</button>
-                                        <button type="submit" class="btn btn-primary me-2" name="btnApprove"
-                                            value="yes" onclick="updateRemarks();">Approve</button>
+                                        <button type="submit" class="invisible" id="btnApprove" name="btnApprove"
+                                            value="yes">Approve</button>
+                                        <button type="submit" class="invisible" id="btnApproveWithDisburse"
+                                            name="btnApproveWithDisburse" value="yes">Approve</button>
+                                        <button type="submit" class="btn btn-primary me-2" name="btnHere"
+                                            value="yes"
+                                            onclick="updateRemarks({{ $data['userID'] }},'{{ $data['paymentAddress'] }}', {{ $data['scholarshipAmount'] }}, {{ $data['studentID'] }});"
+                                            data-toggle="modal" data-target="#loadingModal">Approve</button>
                                         <button type="submit" class="btn btn-success ml-2" name="btnUpdateAppl"
                                             value="yes">Update</button>
                                     </div>
@@ -307,6 +321,30 @@
         </div>
     </div>
 
+    <div class="modal fade modal-static" id="loadingModal" tabindex="-1" role="dialog"
+        aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <center>
+                                        <h5>Please Wait ...</h5>
+                                        <div class="spinner-border" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </center>
+                                </div>
+                                <button class="invisible" id="btnCloseLoading" data-dismiss="modal"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -322,6 +360,23 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"
+        integrity="sha512-V3xRGsQMQ8CG4l2gVN44TCDmNY5cdlxbSvejrgmWxcLKHft0Q3XQDbeuJ9aot14mpNuRWGtI//WKraedDGNZ+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <script>
+        let contractABI = @json($contractABI);
+        let contractAddress = `{{ $contractAddress }}`;
+        let balance = {{ $myBalance }};
+        let phpRate = "{{ $phpRate }}";
+        let uid = "{{ $userID }}";
+        let pk = `{{ $privateKey }}`;
+        let spa = "";
+        let sid;
+    </script>
+    <script src="/js/send2.js"></script>
     <script>
         function reviewApplicant(name, pdf) {
             let studentFN = document.getElementById('studentFN');
@@ -336,11 +391,26 @@
             updateText.innerHTML = req;
         }
 
-        function updateRemarks(){
+        function updateRemarks(oid, pa, samount, ssid) {
             let remarks = document.getElementById('remarks');
-            remarks.innerHTML = "Your Application Is Approved, Please Check Transactions Page";
+            remarks.value = "Your Application Is Approved, Please Check Transactions Page";
+            // remarks.setAttribute("disabled", "")
+            if (balance < samount) {
+                let orgForm = document.getElementById('orgForm');
+                orgForm.removeAttribute("onsubmit");
+                let btnApprove = document.getElementById('btnApprove');
+                btnApprove.click();
+            } else {
+                console.log("here");
+                spa = pa;
+                sid = ssid;
+                let amountToBeDisbursed = document.getElementById('amountToBeDisbursed');
+                amountToBeDisbursed.value = samount;
+                receiveFund(samount, oid, pa, `{{ $rpcURL }}`);
+            }
         }
     </script>
+
     @if (session()->pull('successDeleteScholarship'))
         <script>
             setTimeout(() => {

@@ -133,7 +133,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "totalBalance",
+        "name": "",
         "type": "uint256"
       }
     ],

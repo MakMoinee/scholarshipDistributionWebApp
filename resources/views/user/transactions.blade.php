@@ -64,65 +64,68 @@
 
     <div class="container-fluid py-5">
         <div class="container">
-            <form action="/user_details" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <h3>Transactions</h3>
-                                        <button style="float: right" class="btn btn-primary" onclick="window.open('https\:\/\/sepolia.etherscan.io/address/0xAD3F2e8F08d00825b367514A28744BbE2e5e46e4')">Ledger</button>
-                                    </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h3 style="float: left">Transactions</h3>
+                                    <button style="float: right" class="btn btn-primary"
+                                        onclick="window.open('https\:\/\/sepolia.etherscan.io/address/{{ $contractAddress }}#internaltx')">Ledger</button>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <br>
-                                        <div class="table-responsive">
-                                            <table class="table border mb-0">
-                                                <thead class="table-dark fw-semibold">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br>
+                                    <div class="table-responsive">
+                                        <table class="table border mb-0">
+                                            <thead class="table-dark fw-semibold">
+                                                <tr class="align-middle">
+                                                    <th class="text-center">
+                                                    </th>
+                                                    <th>Scholarship Name</th>
+                                                    <th class="text-center">Your Payment Address</th>
+                                                    <th>Status</th>
+                                                    <th class="text-center">Created Date</th>
+                                                    <th>Transaction Hash</th>
+                                                    <th class="text-center">Action</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($transactions as $item)
                                                     <tr class="align-middle">
-                                                        <th class="text-center">
-                                                        </th>
-                                                        <th>Scholarship Name</th>
-                                                        <th class="text-center">Your Payment Address</th>
-                                                        <th>Status</th>
-                                                        <th class="text-center">Created Date</th>
-                                                        <th>Action</th>
-                                                        <th class="text-center"></th>
+                                                        <td class="text-center"></td>
+                                                        <td>
+                                                            {{ $item->scholarshipName }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ strlen($item->studentPaymentAddress) >= 10 ? substr($item->studentPaymentAddress, 10) . '...' : $item->studentPaymentAddress }}
+                                                        </td>
+                                                        <td>
+                                                            <b>{{ $item->status }}</b>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-success text-white"
+                                                                onclick="viewHash('{{ $item->transactionHash }}')">View
+                                                                Hash</button>
+                                                        </td>
+                                                        <td class="text-center"></td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($transactions as $item)
-                                                        <tr class="align-middle">
-                                                            <td class="text-center"></td>
-                                                            <td>
-                                                                {{ $item->scholarshipName }}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ strlen($item->studentPaymentAddress) >= 10 ? substr($item->studentPaymentAddress, 10) . '...' : $item->studentPaymentAddress }}
-                                                            </td>
-                                                            <td>
-                                                                <b>{{ $item->status }}</b>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
-                                                            </td>
-                                                            <td></td>
-                                                            <td class="text-center"></td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -265,6 +268,16 @@
             btnUploadRequirements.innerHTML = 'Upload File';
             btnClear.setAttribute("style", "display:none;");
 
+        }
+
+        function viewHash(txt) {
+            Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'Hash',
+                text: txt,
+                showConfirmButton: true,
+            });
         }
     </script>
     @if (session()->pull('successApply'))

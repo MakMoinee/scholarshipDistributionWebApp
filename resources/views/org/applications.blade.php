@@ -441,6 +441,34 @@
         </script>
         {{ session()->forget('successDeleteScholarship') }}
     @endif
+    @if (session()->pull('successApprovedWithDisbursed'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Successfully Approved & Disbursed Application',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('successApprovedWithDisbursed') }}
+    @endif
+    @if (session()->pull('errorApprovedWithDisbursed'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Failed To Approve & Disburse Application, Please Try Again',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('errorApprovedWithDisbursed') }}
+    @endif
     @if (session()->pull('errorAddRemarks'))
         <script>
             setTimeout(() => {

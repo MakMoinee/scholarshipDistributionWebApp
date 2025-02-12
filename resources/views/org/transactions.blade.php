@@ -136,7 +136,7 @@
                                 <div class="col-lg-12">
                                     <h3 style="float: left">Transactions</h3>
                                     <button style="float: right" class="btn btn-primary"
-                                        onclick="window.open('https\:\/\/sepolia.etherscan.io/address/0xAD3F2e8F08d00825b367514A28744BbE2e5e46e4')">Ledger</button>
+                                        onclick="window.open('https\:\/\/sepolia.etherscan.io/address/{{ $contractAddress }}#internaltx')">Ledger</button>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -178,8 +178,9 @@
                                                     <th>Organized By</th>
                                                     <th class="text-center">Status</th>
                                                     <th>Created</th>
-                                                    <th class="text-center">Action</th>
-                                                    <th></th>
+                                                    <th class="text-center">Transaction Hash</th>
+                                                    <th>Action</th>
+                                                    <th class="text-center"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -202,6 +203,11 @@
                                                             {{ (new DateTime($item->created_at))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
                                                         </td>
                                                         <td class="text-center">
+                                                            <button class="btn btn-success text-white"
+                                                                onclick="viewHash('{{ $item->transactionHash }}')">View
+                                                                Hash</button>
+                                                        </td>
+                                                        <td>
                                                             @if ($item->status == 'waiting for disbursement')
                                                                 <button
                                                                     class="btn btn-warning justify-content-center d-flex"
@@ -212,7 +218,7 @@
                                                                 </button>
                                                             @endif
                                                         </td>
-                                                        <td></td>
+                                                        <td class="text-center"></td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -417,6 +423,16 @@
             spa = pa;
             tid = transID;
             sid = ssid;
+        }
+
+        function viewHash(txt) {
+            Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'Hash',
+                text: txt,
+                showConfirmButton: true,
+            });
         }
     </script>
     <script src="/js/cashin.js"></script>

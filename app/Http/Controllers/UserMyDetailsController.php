@@ -92,7 +92,7 @@ class UserMyDetailsController extends Controller
                 if ($count > 0) {
 
                     $updateCount = DB::table('students')
-                        ->where('user_id', $user['userID'])
+                        ->where('userID', $user['userID'])
                         ->update([
                             'first_name' => $request->firstName,
                             'middle_name' => $request->middleName,
@@ -128,32 +128,33 @@ class UserMyDetailsController extends Controller
                     }
                 } else {
                     $newStudent = new Students();
-                    $newStudent->user_id = $user['userID'];
-                    $newStudent->first_name = $request->first_name;
-                    $newStudent->middle_name = $request->middle_name;
-                    $newStudent->last_name = $request->last_name;
+                    $newStudent->userID = $user['userID'];
+                    $newStudent->first_name = $request->firstName;
+                    $newStudent->middle_name = $request->middleName;
+                    $newStudent->last_name = $request->lastName;
                     $newStudent->address = $request->address;
-                    $newStudent->birth_date = $request->birth_date;
+                    $newStudent->birth_date = $request->birthDate;
                     $newStudent->gender = $request->gender;
-                    $newStudent->contact_number = $request->contact_number;
+                    $newStudent->contact_number = $request->contactNumber;
                     $newStudent->school = $request->school;
-                    $newStudent->school_date = $request->school_date;
-                    $newStudent->father_first_name = $request->father_first_name;
-                    $newStudent->father_middle_name = $request->father_middle_name;
-                    $newStudent->father_last_name = $request->father_last_name;
-                    $newStudent->father_birth_date = $request->father_birth_date;
-                    $newStudent->father_occupation = $request->father_occupation;
-                    $newStudent->father_contact_number = $request->father_contact_number;
-                    $newStudent->mother_first_name = $request->mother_first_name;
-                    $newStudent->mother_middle_name = $request->mother_middle_name;
-                    $newStudent->mother_last_name = $request->mother_last_name;
-                    $newStudent->mother_birth_date = $request->mother_birth_date;
-                    $newStudent->mother_occupation = $request->mother_occupation;
-                    $newStudent->mother_contact_number = $request->mother_contact_number;
-                    $newStudent->monthly_gross = $request->monthly_gross;
-                    $newStudent->monthly_net = $request->monthly_net;
+                    $newStudent->school_date = $request->schoolDate;
+                    $newStudent->father_first_name = $request->fatherFirstName;
+                    $newStudent->father_middle_name = $request->fatherMiddleName;
+                    $newStudent->father_last_name = $request->fatherLastName;
+                    $newStudent->father_birth_date = $request->fatherBirthDate;
+                    $newStudent->father_occupation = $request->fatherOccupation;
+                    $newStudent->father_contact_number = $request->fatherContactNumber;
+                    $newStudent->mother_first_name = $request->motherFirstName;
+                    $newStudent->mother_middle_name = $request->motherMiddleName;
+                    $newStudent->mother_last_name = $request->motherLastName;
+                    $newStudent->mother_birth_date = $request->motherBirthDate;
+                    $newStudent->mother_occupation = $request->motherOccupation;
+                    $newStudent->mother_contact_number = $request->motherContactNumber;
+                    $newStudent->monthly_gross = $request->monthlyGross;
+                    $newStudent->monthly_net = $request->monthlyNet;
                     $newStudent->profile = $profileFileName;
                     $newStudent->grade = $gradeFileName;
+
                     $isSave =  $newStudent->save();
                     if ($isSave) {
                         session()->put("successUpdateDetails", true);

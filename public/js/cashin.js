@@ -36,6 +36,7 @@ async function cashin() {
             contractABI,
             signer
         );
+        
 
         // Set the transaction parameters (e.g., cashin 0.1 ETH)
         const transaction = await aidContract.addScholarRecord(
