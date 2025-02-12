@@ -76,6 +76,10 @@
         td {
             color: #000000;
         }
+
+        .bg-grey {
+            background-color: #f5f5f5 !important;
+        }
     </style>
 </head>
 
@@ -119,36 +123,49 @@
                                 </div>
                             </div>
                             @if (count($data) > 0)
+                                <div class="row">
+                                    <div class="col-lg-5 mx-auto bg-grey" style="height: 250px;">
+
+                                        @if ($data['profile'])
+                                            <img height="250px" src="/profiles/{{ $data['profile'] }}" alt=""
+                                                srcset="">
+                                        @else
+                                            <img class="mx-auto" src="" id="imgProfile" height="250px"
+                                                alt="" srcset="">
+                                        @endif
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="row mt-2">
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="firstName">First Name:<span
                                                 class="text-danger">*</span></label>
                                         <input required type="text" name="firstName" id=""
-                                            class="form-control" value="{{ $data['firstName'] }}">
+                                            class="form-control" value="{{ $data['first_name'] }}">
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="middleName">Middle Name:</label>
                                         <input type="text" name="middleName" id="" class="form-control"
-                                            value="{{ $data['middleName'] }}">
+                                            value="{{ $data['middle_name'] }}">
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="lastName">Last Name:<span
                                                 class="text-danger">*</span></label>
                                         <input required type="text" name="lastName" id=""
-                                            class="form-control" value="{{ $data['lastName'] }}">
+                                            class="form-control" value="{{ $data['last_name'] }}">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="address">Address:<span
                                                 class="text-danger">*</span></label>
-                                        <textarea required name="address" id="" cols="30" rows="4" class="form-control">{{ $user['address'] }}</textarea>
+                                        <textarea required name="address" id="" cols="30" rows="4" class="form-control">{{ $data['address'] }}</textarea>
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="birthDate">Birth Date:<span
                                                 class="text-danger">*</span></label>
                                         <input required type="date" name="birthDate" id=""
-                                            class="form-control" value="{{ $user['birthDate'] }}"
+                                            class="form-control" value="{{ $data['birth_date'] }}"
                                             max="{{ $maxDate }}">
                                     </div>
                                     <div class="col-lg-4">
@@ -156,7 +173,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="row d-flex">
                                             <div class="col-lg-4">
-                                                @if ($user['gender'] == 'male')
+                                                @if ($data['gender'] == 'male')
                                                     <input type="radio" value="male" name="gender"
                                                         id="" style="cursor: pointer" checked>
                                                 @else
@@ -166,7 +183,7 @@
                                                 <label for="male" class="text-dark">Male</label>
                                             </div>
                                             <div class="col-lg-4">
-                                                @if ($user['gender'] == 'female')
+                                                @if ($data['gender'] == 'female')
                                                     <input type="radio" value="female" name="gender"
                                                         id="" style="cursor: pointer" checked>
                                                 @else
@@ -184,19 +201,143 @@
                                                 class="text-danger">*</span> </label>
                                         <input required step="1" type="number" name="contactNumber"
                                             id="" class="form-control"
-                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                            value="{{ $data['contact_number'] }}">
                                     </div>
                                     <div class="col-lg-4">
                                         <label for="school" class="text-dark">School Attended (Current):<span
                                                 class="text-danger">*</span> </label>
                                         <input required type="text" name="school" id=""
-                                            class="form-control">
+                                            class="form-control" value="{{ $data['school'] }}">
                                     </div>
                                     <div class="col-lg-4">
                                         <label for="schoolDate" class="text-dark">School Date Started:<span
                                                 class="text-danger">*</span> </label>
                                         <input required type="date" name="schoolDate" id=""
                                             class="form-control" max="{{ date('Y-m-d', strtotime(now())) }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-lg-12">
+                                        <h4>Parents Information</h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-4">
+                                        <label for="fatherFirstName" class="text-dark">Father's First Name:<span
+                                                class="text-danger">*</span> </label>
+                                        <input required type="text" name="fatherFirstName" id=""
+                                            class="form-control" value="{{ $data['father_first_name'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="fatherMiddleName" class="text-dark">Father's Middle Name:</label>
+                                        <input type="text" name="fatherMiddleName" id=""
+                                            class="form-control" value="{{ $data['father_middle_name'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="fatherLastName" class="text-dark">Father's Last Name:<span
+                                                class="text-danger">*</span> </label>
+                                        <input required type="text" name="fatherLastName" id=""
+                                            class="form-control" value="{{ $data['father_last_name'] }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-4">
+                                        <label for="fatherBirthDate" class="text-dark">Father's Birth Date:<span
+                                                class="text-danger">*</span></label>
+                                        <input required type="date" name="fatherBirthDate" id=""
+                                            class="form-control" max="{{ date('Y-m-d', strtotime(now())) }}"
+                                            value="{{ $data['father_birth_date'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="fatherOccupation" class="text-dark">Father's Occupation:<span
+                                                class="text-danger">*</span> </label>
+                                        <input required type="text" name="fatherOccupation" id=""
+                                            class="form-control" value="{{ $data['father_occupation'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="fatherContactNumber" class="text-dark">Father's Contact
+                                            Number:<span class="text-danger">*</span> </label>
+                                        <input required type="number" name="fatherContactNumber" id=""
+                                            class="form-control"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                            value="{{ $data['father_contact_number'] }}">
+                                    </div>
+
+
+                                </div>
+                                <br>
+                                <div class="row mt-3">
+                                    <div class="col-lg-4">
+                                        <label for="motherFirstName" class="text-dark">Mother's First Name:<span
+                                                class="text-danger">*</span> </label>
+                                        <input required type="text" name="motherFirstName" id=""
+                                            class="form-control" value="{{ $data['mother_first_name'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="motherMiddleName" class="text-dark">Mother's Maiden Middle
+                                            Name:</label>
+                                        <input type="text" name="motherMiddleName" id=""
+                                            class="form-control" value="{{ $data['mother_middle_name'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="motherLastName" class="text-dark">Mother's Maiden Last
+                                            Name:<span class="text-danger">*</span> </label>
+                                        <input required type="text" name="motherLastName" id=""
+                                            class="form-control" value="{{ $data['mother_last_name'] }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-4">
+                                        <label for="motherBirthDate" class="text-dark">Mother's Birth Date:<span
+                                                class="text-danger">*</span></label>
+                                        <input required type="date" name="motherBirthDate" id=""
+                                            class="form-control" max="{{ date('Y-m-d', strtotime(now())) }}"
+                                            value="{{ $data['mother_birth_date'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="motherOccupation" class="text-dark">Mother's Occupation:<span
+                                                class="text-danger">*</span> </label>
+                                        <input required type="text" name="motherOccupation" id=""
+                                            class="form-control" value="{{ $data['mother_occupation'] }}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="motherContactNumber" class="text-dark">Mother's Contact
+                                            Number:<span class="text-danger">*</span> </label>
+                                        <input required type="number" name="motherContactNumber" id=""
+                                            class="form-control"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                            value="{{ $data['mother_contact_number'] }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-lg-12">
+                                        <h4>Household Income</h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-6">
+                                        <label for="monthlyGross" class="text-dark">Household Gross Monthly
+                                            Income:<span class="text-danger">*</span> </label>
+                                        <input required type="number" step="1" name="monthlyGross"
+                                            id="" class="form-control"
+                                            value="{{ $data['monthly_gross'] }}">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="monthlyNet" class="text-dark">Household Net Monthly
+                                            Income:<span class="text-danger">*</span> </label>
+                                        <input required type="number" step="1" name="monthlyNet"
+                                            id="" class="form-control" value="{{ $data['monthly_net'] }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-lg-12">
+                                        <h4>Grades</h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <img height="250px" src="/grades/{{ $data['grade'] }}" alt="" srcset="">
                                     </div>
                                 </div>
                             @else
