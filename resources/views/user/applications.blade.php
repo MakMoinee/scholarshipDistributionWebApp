@@ -238,7 +238,8 @@
                                 <option value="">Select Available Scholarship ...</option>
                                 @foreach ($filteredScholarships as $item)
                                     <option value="{{ $item['id'] }}" owner="{{ $item['userID'] }}">
-                                        {{ $item['scholarshipName'] }} </option>
+                                        {{ $item['scholarshipName'] }} =
+                                        P{{ number_format($item['scholarshipAmount']) }} </option>
                                 @endforeach
                             </select>
                         </div>
