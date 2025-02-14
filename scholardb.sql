@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 15/02/2025 01:38:18
+ Date: 15/02/2025 01:42:33
 */
 
 SET NAMES utf8mb4;
@@ -51,12 +51,11 @@ CREATE TABLE `applications`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of applications
 -- ----------------------------
-INSERT INTO `applications` VALUES (1, 1, 1, '1739554143.pdf', NULL, NULL, NULL, '12', 'active', '2025-02-14 17:29:03', '2025-02-14 17:29:03');
 
 -- ----------------------------
 -- Table structure for balances
@@ -181,12 +180,11 @@ CREATE TABLE `scholarships`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scholarships
 -- ----------------------------
-INSERT INTO `scholarships` VALUES (1, 2, 'CHED', 'TUPAD', 1000.0000, 1, 'Sample', 'active', '2025-02-14 17:11:12', '2025-02-14 17:11:12');
 
 -- ----------------------------
 -- Table structure for students
