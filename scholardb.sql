@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 13/02/2025 01:05:44
+ Date: 15/02/2025 01:38:18
 */
 
 SET NAMES utf8mb4;
@@ -56,7 +56,7 @@ CREATE TABLE `applications`  (
 -- ----------------------------
 -- Records of applications
 -- ----------------------------
-INSERT INTO `applications` VALUES (1, 1, 2, '1739332122.pdf', NULL, NULL, NULL, '0x2deA5F19BE50Faf7A20474F1cb1675Cc7c899FD6', 'active', '2025-02-12 03:48:42', '2025-02-12 03:48:42');
+INSERT INTO `applications` VALUES (1, 1, 1, '1739554143.pdf', NULL, NULL, NULL, '12', 'active', '2025-02-14 17:29:03', '2025-02-14 17:29:03');
 
 -- ----------------------------
 -- Table structure for balances
@@ -74,7 +74,7 @@ CREATE TABLE `balances`  (
 -- ----------------------------
 -- Records of balances
 -- ----------------------------
-INSERT INTO `balances` VALUES (1, 2, 750.0000, '2025-02-12 09:20:44', '2025-02-12 09:20:44');
+INSERT INTO `balances` VALUES (1, 2, 1500.0000, '2025-02-12 09:20:44', '2025-02-12 09:20:44');
 
 -- ----------------------------
 -- Table structure for cashins
@@ -89,12 +89,13 @@ CREATE TABLE `cashins`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cashins
 -- ----------------------------
 INSERT INTO `cashins` VALUES (1, 2, 1000.00, '0.0065599', '0xf199d6c18abf37fde5c69b5e4b084939caa8b6e6066735284e986dcae8579a62', '2025-02-12 09:29:19', '2025-02-12 09:29:19');
+INSERT INTO `cashins` VALUES (2, 2, 1000.00, '0.0064776', '0x3348f942c70b1603f3aa1195b41f2c5cceb16790fafd0db02d8e5446da5ba904', '2025-02-13 15:54:41', '2025-02-13 15:54:41');
 
 -- ----------------------------
 -- Table structure for migrations
@@ -105,7 +106,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
@@ -113,13 +114,13 @@ CREATE TABLE `migrations`  (
 INSERT INTO `migrations` VALUES (1, '2019_12_14_000001_create_personal_access_tokens_table', 1);
 INSERT INTO `migrations` VALUES (2, '2024_12_23_175821_create_users_table', 1);
 INSERT INTO `migrations` VALUES (3, '2024_12_23_200112_create_students_table', 1);
-INSERT INTO `migrations` VALUES (4, '2024_12_27_070309_create_scholarships_table', 1);
 INSERT INTO `migrations` VALUES (5, '2024_12_27_090047_create_applications_table', 1);
 INSERT INTO `migrations` VALUES (6, '2024_12_27_145112_create_application_remarks_table', 1);
 INSERT INTO `migrations` VALUES (7, '2024_12_27_153441_create_notifications_table', 1);
 INSERT INTO `migrations` VALUES (8, '2025_02_09_175657_create_transactions_table', 1);
 INSERT INTO `migrations` VALUES (9, '2025_02_09_195525_create_cashins_table', 1);
 INSERT INTO `migrations` VALUES (10, '2025_02_09_200119_create_balances_table', 1);
+INSERT INTO `migrations` VALUES (11, '2024_12_27_070309_create_scholarships_table', 2);
 
 -- ----------------------------
 -- Table structure for notifications
@@ -133,11 +134,12 @@ CREATE TABLE `notifications`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notifications
 -- ----------------------------
+INSERT INTO `notifications` VALUES (1, 2, 'A Student Applies In One Of Your Scholarship Programs, Please Check Applications Page', 'unread', '2025-02-14 17:29:03', '2025-02-14 17:29:03');
 
 -- ----------------------------
 -- Table structure for personal_access_tokens
@@ -157,7 +159,7 @@ CREATE TABLE `personal_access_tokens`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `personal_access_tokens_token_unique`(`token` ASC) USING BTREE,
   INDEX `personal_access_tokens_tokenable_type_tokenable_id_index`(`tokenable_type` ASC, `tokenable_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of personal_access_tokens
@@ -173,17 +175,18 @@ CREATE TABLE `scholarships`  (
   `orgName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `scholarshipName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `scholarshipAmount` decimal(10, 4) NOT NULL,
+  `numberOfRespondents` int NOT NULL,
   `requirements` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scholarships
 -- ----------------------------
-INSERT INTO `scholarships` VALUES (2, 2, 'CHED', 'FINANCIAL ASSISTANCE', 250.0000, 'Birth Certificate, Proof Of Billing (With Your Address Indicated)', 'active', '2025-02-12 03:48:02', '2025-02-12 03:48:02');
+INSERT INTO `scholarships` VALUES (1, 2, 'CHED', 'TUPAD', 1000.0000, 1, 'Sample', 'active', '2025-02-14 17:11:12', '2025-02-14 17:11:12');
 
 -- ----------------------------
 -- Table structure for students
@@ -240,7 +243,7 @@ CREATE TABLE `transactions`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of transactions
