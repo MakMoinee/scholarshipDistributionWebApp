@@ -236,7 +236,7 @@
                                     class="text-danger">*</span></label>
                             <select required name="scholarship" id="scholarship" class="form-control text-dark">
                                 <option value="">Select Available Scholarship ...</option>
-                                @foreach ($scholarships as $item)
+                                @foreach ($filteredScholarships as $item)
                                     <option value="{{ $item['id'] }}" owner="{{ $item['userID'] }}">
                                         {{ $item['scholarshipName'] }} </option>
                                 @endforeach

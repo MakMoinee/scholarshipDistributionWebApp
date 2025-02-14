@@ -391,7 +391,7 @@
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Successfully Approved Application',
+                    title: 'Successfully Approved Application But Waiting For Disbursement',
                     showConfirmButton: false,
                     timer: 800
                 });

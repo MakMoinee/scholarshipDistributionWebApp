@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balance;
 use App\Models\Scholarships;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,19 @@ class OrgScholarshipsController extends Controller
             }
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
-            return view('org.scholarships', ['notifCount' => $notifCount]);
+
+            $checkBalance = DB::table('balances')->where('userID', '=', $user['userID'])->count();
+            if ($checkBalance == 0) {
+                $newBalance = new Balance();
+                $newBalance->userID = $user['userID'];
+                $newBalance->amount = 0;
+                $newBalance->save();
+            }
+
+            $myBalanceArr = json_decode(DB::table('balances')->where('userID', '=', $user['userID'])->get(), true);
+            $myBalance = $myBalanceArr[0]['amount'];
+
+            return view('org.scholarships', ['notifCount' => $notifCount, 'myBalance' => $myBalance]);
         }
         return redirect("/");
     }
@@ -59,6 +72,7 @@ class OrgScholarshipsController extends Controller
                     $newScholarship->scholarshipName = $request->scholarshipName;
                     $newScholarship->scholarshipAmount = $request->scholarshipAmount;
                     $newScholarship->requirements = $request->requirements;
+                    $newScholarship->numberOfRespondents = $request->numberOfRespondents;
                     $newScholarship->status = "active";
                     $isSave = $newScholarship->save();
                     if ($isSave) {

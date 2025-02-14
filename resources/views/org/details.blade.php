@@ -115,6 +115,12 @@
                                         <h4>General</h4>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <label class="text-dark" for="ownerID">Owner ID:
+                                            <b>{{ $user['userID'] }}</b></label>
+                                    </div>
+                                </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-4">
                                         <label class="text-dark" for="firstName">First Name:<span

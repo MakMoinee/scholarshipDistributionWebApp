@@ -102,7 +102,7 @@
 
     <div class="container-fluid py-5">
         <div class="container">
-            <form action="/org_scholars" method="post" enctype="multipart/form-data">
+            <form action="/org_scholars" method="post" enctype="multipart/form-data" id="orgAddScholar">
                 @csrf
                 <div class="row">
                     <div class="col-lg-12">
@@ -130,7 +130,16 @@
                                                 class="text-danger">*</span>
                                         </label>
                                         <input required type="number" step="1" name="scholarshipAmount"
-                                            id="" class="form-control">
+                                            id="scholarshipAmount" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-lg-4">
+                                        <label class="text-dark" for="numberOfRespondents">Number Of Respondents:<span
+                                                class="text-danger">*</span>
+                                        </label>
+                                        <input required type="number" step="1" name="numberOfRespondents"
+                                            id="numberOfRespondents" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -153,8 +162,11 @@
                                             <button type="button" class="btn btn-primary me-2"
                                                 onclick="window.location.href='/org_sch_list'">Scholarship
                                                 Lists</button>
-                                            <button class="btn btn-success text-white" name="btnSaveScholarship"
-                                                value="yes" type="submit">Add Scholarship</button>
+                                            <button type="submit" class="btn invisible" name="btnSaveScholarship"
+                                                value="yes" id="btnSaveScholarship"></button>
+                                            <button class="btn btn-success text-white" type="button"
+                                                onclick="checkBalance()">Add
+                                                Scholarship</button>
                                         </center>
                                     </div>
                                 </div>
@@ -292,6 +304,26 @@
                 editPass.type = "text";
             } else {
                 editPass.type = "password";
+            }
+        }
+
+        function checkBalance() {
+            console.log("here");
+            let myBalance = {{ $myBalance }};
+            let numberOfRespondents = document.getElementById('numberOfRespondents').value;
+            let scholarshipAmount = document.getElementById('scholarshipAmount').value;
+
+            let total = scholarshipAmount * numberOfRespondents;
+            if (myBalance <= total) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `You need to have a balance of ${total}, Please Cashin First`,
+                    showConfirmButton: true,
+                });
+            } else {
+                let btnSaveScholarship = document.getElementById('btnSaveScholarship');
+                btnSaveScholarship.click();
             }
         }
     </script>

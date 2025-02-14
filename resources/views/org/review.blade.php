@@ -168,11 +168,11 @@
                                     <div class="col-lg-12 d-flex">
                                         <button type="button" class="btn btn-secondary mr-2"
                                             onclick="window.close();">Close</button>
-                                        <button type="submit" class="invisible" id="btnApprove" name="btnApprove"
+                                        <button type="submit" style="display: none" id="btnApprove" name="btnApprove"
                                             value="yes">Approve</button>
                                         <button type="submit" class="invisible" id="btnApproveWithDisburse"
                                             name="btnApproveWithDisburse" value="yes">Approve</button>
-                                        <button type="submit" class="btn btn-primary me-2" name="btnHere"
+                                        <button type="button" class="btn btn-primary me-2" name="btnHere"
                                             value="yes"
                                             onclick="updateRemarks({{ $data['userID'] }},'{{ $data['paymentAddress'] }}', {{ $data['scholarshipAmount'] }}, {{ $data['studentID'] }});"
                                             data-toggle="modal" data-target="#loadingModal">Approve</button>
@@ -396,9 +396,12 @@
             remarks.value = "Your Application Is Approved, Please Check Transactions Page";
             // remarks.setAttribute("disabled", "")
             if (balance < samount) {
-                let orgForm = document.getElementById('orgForm');
+                console.log("heye");
+                let btnCloseLoading = document.getElementById("btnCloseLoading");
+                btnCloseLoading.click();
+                let orgForm = document.getElementById("orgForm");
                 orgForm.removeAttribute("onsubmit");
-                let btnApprove = document.getElementById('btnApprove');
+                let btnApprove = document.getElementById("btnApprove");
                 btnApprove.click();
             } else {
                 console.log("here");

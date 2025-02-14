@@ -23,13 +23,29 @@ class UserApplicationsController extends Controller
             }
             $notifCount = DB::table('notifications')->where('userID', '=', $user['userID'])->where('status', '=', 'unread')->count();
 
+
             $allScholarships = json_decode(DB::table('scholarships')->get(), true);
+            $filteredScholarships = array();
+            foreach ($allScholarships as $ss) {
+                $count = DB::table('applications')->where('scholarshipID', '=', $ss['id'])->count();
+                if ($count >= $ss['numberOfRespondents']) {
+                    continue;
+                } else {
+                    array_push($filteredScholarships, $ss);
+                }
+            }
             $allApplications = DB::table('applications')
                 ->where('userID', '=', $user['userID'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-            return view('user.applications', ['notifCount' => $notifCount, 'user' => $user, 'scholarships' => $allScholarships, 'applications' => $allApplications]);
+            return view('user.applications', [
+                'notifCount' => $notifCount,
+                'user' => $user,
+                'scholarships' => $allScholarships,
+                'applications' => $allApplications,
+                'filteredScholarships' => $filteredScholarships
+            ]);
         }
         return redirect("/");
     }
