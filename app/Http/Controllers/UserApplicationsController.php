@@ -27,7 +27,7 @@ class UserApplicationsController extends Controller
             $allScholarships = json_decode(DB::table('scholarships')->get(), true);
             $filteredScholarships = array();
             foreach ($allScholarships as $ss) {
-                $count = DB::table('applications')->where('scholarshipID', '=', $ss['id'])->count();
+                $count = DB::table('applications')->where('scholarshipID', '=', $ss['id'])->where('status', '<>', 'rejected')->count();
                 if ($count >= $ss['numberOfRespondents']) {
                     continue;
                 } else {

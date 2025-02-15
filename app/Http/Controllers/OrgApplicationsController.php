@@ -150,6 +150,13 @@ class OrgApplicationsController extends Controller
                 } else {
                     session()->put("errorApprovedWithDisbursed", true);
                 }
+            } else if ($request->btnReject) {
+                $updateCount = DB::table('applications')->where('id', '=', $request->applicationID)->update(['status' => 'rejected']);
+                if ($updateCount > 0) {
+                    session()->put("successRejected", true);
+                } else {
+                    session()->put("errorReject", true);
+                }
             }
 
             return redirect("/org_applications");

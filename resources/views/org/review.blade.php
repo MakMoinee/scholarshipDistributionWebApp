@@ -168,8 +168,8 @@
                                     <div class="col-lg-12 d-flex">
                                         <button type="button" class="btn btn-secondary mr-2"
                                             onclick="window.close();">Close</button>
-                                        <button type="submit" style="display: none" id="btnApprove" name="btnApprove"
-                                            value="yes">Approve</button>
+                                        <button type="submit" style="display: none" id="btnApprove"
+                                            name="btnApprove" value="yes">Approve</button>
                                         <button type="submit" class="invisible" id="btnApproveWithDisburse"
                                             name="btnApproveWithDisburse" value="yes">Approve</button>
                                         <button type="button" class="btn btn-primary me-2" name="btnHere"
@@ -178,6 +178,9 @@
                                             data-toggle="modal" data-target="#loadingModal">Approve</button>
                                         <button type="submit" class="btn btn-success ml-2" name="btnUpdateAppl"
                                             value="yes">Update</button>
+                                        <button onclick="rejectApp({{ $data['id'] }})" class="btn btn-danger ml-2"
+                                            type="button" data-toggle="modal"
+                                            data-target="#rejectModal">Reject</button>
                                     </div>
                                 </div>
                             </form>
@@ -287,6 +290,38 @@
                             style="color:white !important;">Close</button>
                         <button type="submit" class="btn btn-danger" name="btnDeleteScholar" value="yes"
                             style="color:white !important;">Approved</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form action="/org_applications" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Reject Application</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Are You Sure You Want To Reject This Application?</p>
+                                        <input type="hidden" id="rid" name="applicationID" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="submit" name="btnReject" value="yes">Yes,
+                            Proceed</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="color:white !important;">Close</button>
                     </div>
                 </form>
             </div>
@@ -411,6 +446,11 @@
                 amountToBeDisbursed.value = samount;
                 receiveFund(samount, oid, pa, `{{ $rpcURL }}`);
             }
+        }
+
+        function rejectApp(appID) {
+            let rid = document.getElementById('rid');
+            rid.value = appID;
         }
     </script>
 

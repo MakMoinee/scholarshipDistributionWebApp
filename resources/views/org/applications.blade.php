@@ -171,7 +171,7 @@
                                                             {{ (new DateTime($item->applicationCreateDate))->setTimezone(new DateTimeZone('Asia/Manila'))->format('Y-m-d h:i A') }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if ($item->applicationStatus != 'approved')
+                                                            @if ($item->applicationStatus != 'approved' && $item->applicationStatus != 'rejected')
                                                                 <button
                                                                     onclick="window.open('/org_review_appl?id={{ $item->applicationID }}')"
                                                                     title="Review"
@@ -441,6 +441,20 @@
         </script>
         {{ session()->forget('successDeleteScholarship') }}
     @endif
+    @if (session()->pull('successRejected'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Successfully Rejected Application',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('successRejected') }}
+    @endif
     @if (session()->pull('successApprovedWithDisbursed'))
         <script>
             setTimeout(() => {
@@ -454,6 +468,21 @@
             }, 500);
         </script>
         {{ session()->forget('successApprovedWithDisbursed') }}
+    @endif
+
+    @if (session()->pull('errorReject'))
+        <script>
+            setTimeout(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Failed To Reject Application, Please Try Again',
+                    showConfirmButton: false,
+                    timer: 800
+                });
+            }, 500);
+        </script>
+        {{ session()->forget('errorReject') }}
     @endif
     @if (session()->pull('errorApprovedWithDisbursed'))
         <script>
